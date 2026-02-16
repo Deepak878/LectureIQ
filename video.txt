@@ -1,0 +1,224 @@
+Hey guys, Greg here. Let's talk about a popular algorithm known as recursion.
+Now to illustrate this idea, let's talk about the Fibonacci number problems.
+So the Fibonacci numbers are a sequence generally starting at zero and one.
+And then the next number is recursively defined as the sum of the previous two values.
+So the next number would be zero plus one, which is one.
+This would be one plus one, which is two, two plus one, which is three.
+We'd get five, eight, thirteen, and so on.
+That sequence is actually infinite. That can keep going.
+So formally, you would define this with a function, saying something like F at zero is equal
+to zero. That's one base case. F at one is equal to one. That's another base case.
+But more generally, for any end that's bigger than one, we would have that F at n is equal to
+the sum of the previous two, which is F at n minus one plus F at n minus two.
+So this is the formal way of saying your base case, F at zero is zero.
+You could think about this basically as an index here. F at zero is zero and F at one is one.
+And then for any end that's bigger than one here, so for two, three, four, five,
+six, and so on, you'd have that F at n is equal to F at n minus one plus F at n minus two.
+And if you were to write a actual function out of this, we'll just use Python,
+because it's basically pseudocode, we'd have to find F at some value of n here.
+Well, you'd have your base cases. So if n is equal to zero, then the base case just says
+we would return the value of zero. So otherwise, if n is equal to one, well, that's your other
+base case. So in that case, you would want to just return one. But more generally, if it's not one
+of the two base cases, if it's not one of these two, then it's actually recursive, which means
+you'd have to call the function that you're using the function F within this function itself.
+So basically, otherwise, we'd have to return the value of F at n minus one plus F at n minus two.
+Okay, this is the recursive part right here. From within this function called F,
+you were actually calling that same function F. That is what it means to be a recursive function.
+You're calling yourself. Okay, so let's see an example of this. So basically, if you called
+something like F at five, if you wanted to know what F at five is, well, it's going to set five
+over here. Okay, well, it's not zero. It's not one. And so we would actually return the result
+of F at n minus one plus F at n minus two. So what it would need is F at n minus one,
+which is going to be F at four. And it's also going to need F at three. So that's F at five
+minus two. And so the result of this is actually going to be the addition of these two calls.
+Okay, but this is recursive. And so F at four here, well, that itself is going to actually need
+F at three. And it's also going to need F at two. And this is still recursive here. So let me
+just move it up a bit. F at three is going to need F at two. And it's also going to need F at one.
+And F at two, well, that would need F at one. And it would need F at zero. F at two is going
+to need F at one and F at zero. And let's just copy and paste this stuff here because F of three
+over here, well, it's going to need the same stuff over here. So F at three over here also needs
+all of that information. And so to work out this information here, well, at the bottom, we know that
+these base cases are actually numbers. And so these are basically leaves in this tree here.
+It's kind of like a recursive tree. And so the leaves are numbers. F at zero, that is a number.
+And so that is zero. F at one, that is a number, which is one. And now we know that F at two is one
+plus zero. And so we can replace F at two with its value of one. F at one, again, these are all
+going to be replaced by ones. Those are ones. This one is also a one. And so is that. Okay, these
+ones are going to be zeros. And you can see we're basically doing duplicate information here. We
+already learned earlier that F at two was one, but we're going to replace it again over here with
+this is going to be one. And this is going to be one. So the F at threes, they are all going to
+be twos. So this is going to be a two. And this is also going to be a two. Now the F at four
+will be replaced by three. So this is three. And finally, we know that F at five, that is going
+to be a value of five. And you can actually see that over here, we already computed that earlier.
+Now when a function is recursive, you'll often hear this term called a call stack. So it is a
+stack because it literally is a stack data structure. This is why recursion comes after the stack
+sections because it uses a recursive call stack. And by call, we mean that's basically short for
+function call stack. So this is our function. And we can see we're calling it many times here.
+These are calls of the function. And so when you're calling the function within the function itself,
+it is recursive. And it's going to generate will be called a function call stack or sometimes
+called a recursive call stack. So let's say we wanted to compute F at four here. Well, I'm
+actually going to put that on the bottom because it's a call stack. We could think about it as
+building up. So what the call stack would be for this, it's going to look like this. So the call
+of F at four, that's again, why it's called call stack because for this function call of F at four,
+well, it stores certain information. It basically says there's this local variable N, which is equal
+to four because throughout this call of the function and has a value of four. And function calls
+also have memory addresses. They basically have what we'd call a return address. It's just
+going to be like some hex code. So 0x and then a bunch of information here. We'll just call it 0x123.
+And so for simplicity, let me just kind of think about this as address A here. So what F at four
+does, well, it says, okay, N is equal to four throughout this function call. And so the first
+thing it needs to know is the value of this, which is going to be F at N minus one, which will be
+F at three. So it immediately calls this function here. And that's why it generates the call stack.
+So F at four, it first needs to know the information for F at three. And so now we're in a new call
+of the function here throughout this call is N equal to three. And so here, it stores information
+here, N is equal to three. And it also has an address to return to. I'll just write address B, for
+example, here it's some hex code. Okay, so F at three, well, it would need to know F at two
+plus F at one. And so the first thing it does is it's going to go over into F at two. So we'd build
+this up again. So we'd say, okay, well, we'd have a spot for F at two. And so throughout here,
+N is equal to two. And we'd store our return address. So we'll just call that address C, for example.
+Okay, so over here, we'd be concerned with N is equal to two. And so F at two would need F at
+one plus F at zero. So the first thing it needs is F at one. So it's going to go over here. And so
+we have F at one over here. Okay, so F at one is very interesting because we store here that N is
+equal to one. And we'd have a return address address of D. And what's interesting about F at one
+here is that it is not going to kind of build up the stack here. It is at what we call a base case.
+And recursive functions, they need some sort of base cases here. Because if you didn't have them,
+they'd basically just call forever. They would just infinitely call the function and you would never
+return. So here, we've hit a base case, which is F at one. And so here at this function call
+level, we just return one return. What does that really mean? Okay, we return two where we came
+from will we came from F at two. So we're basically telling, Hey, F at two, you called me, you called
+F at one. Well, my value, I'm going to return that to you is the value of one. So basically, we would
+go back to F at two here. And it would kind of remember here, it would say, okay, we called this guy
+here, we called F at one. And so his value is actually equal to one. And so we'd also need to call
+F at M minus two. So he would want to know what the value of F at zero is. Currently, it's just a
+question mark. So we would go and get F at zero. And so F at zero in this context, we have N is equal
+to zero. And again, you would have some address, but I'm going to stop writing it. It's going to be
+some address. We'll call it E. And so again, F at zero is a base case. So he's not going to build
+this up any further. And so he's going to return to F at two via this memory address here. So that's
+why we need the memory address, because F at zero, we need to know where to return to. We return to
+where we called it, which in this case is address C associated with F at two. So we return our value
+of zero over to this memory address, or basically telling F at two here that its value of F at zero,
+that function call has a value of zero. Okay, it now knows that F at one is one and F at zero is zero.
+So it knows the value of both of these two calls. And so now F at two is able to return the value,
+which is F at one plus F at zero. And its value is going to be one, which is the sum of those two
+things. Okay, so F at two is one, it's going to return to the thing that called it, which is going
+to be F at three, which is located at memory address B. So it basically says, okay, hey, F at three
+here, well, your value of F at two, that is going to be a result of one, but then F at three also
+needs to know the value of F at one. And so it's going to then put that on the call stack. So F at
+one, I'm going to do this a little bit faster. And so it would basically return here that its value
+is a base case, which is just going to be the value of one. So that's how we know that F at three is
+two, we return this information back to where we called it. So F at four knows that its value of F at
+three is a value of two, but F at four also needs to know the value of F at two. And so we kind of
+build this call stack back up here, F at two, well, F at two is not a base case. And so it needs to
+know the value of F at one, which is currently a question mark, F at zero, which is currently a
+question mark. And so we could draw that for F at one here that's going to quickly kind of return
+here and say that the value of F at one, that is a base case of one, F at zero, that would tell us
+that has a value of zero. And again, F at two would basically return the sum of these two values
+over two, this call here. And so it would tell it that F at two, this value is going to be just one.
+So now F at four actually has the total value here of F at three plus F at two, which is going to
+just be three. So F at four has a value of three. Okay, so that's the recursive call stack and the
+fundamental idea of recursion. So just to really illustrate what would happen here, if you called
+something like F at four, well, it's firstly going to do this before it even thinks about this
+idea. So the placement of this actually has a huge effect on the way that the computer is going
+to run this. It first is going to see F at n minus one before worrying about F at n minus two.
+So F at four is actually first going to think about F at three. And then it's a recursive call.
+So F at three thinks about it the same way. This guy needs to know what F at two is first. So he
+goes and gets F at two. And F at two is going to first think about F at one. Now we hit a base
+case. And so F at two can kind of remember that F at one has a value of one. Okay, F at two also
+is going to need F at zero, which we'd return back and say that's a value of zero. F at two
+would then basically return to F at three that it has a value of one. Now F at three can think about
+F at one. And so F at one is going to be a base case of just one. Okay, F at three is now going to
+return to F at four that it has a value of two. And then F at four would go through this stuff.
+So it also go through F at two, which again is going to go through F at one. That's going to be one.
+F at two would then need F at zero, which is going to be zero. It would then say to F at four
+that it has a value of one. And then ultimately we'd have that F at four is actually going to be
+a result of three. So what happens is you can see there's one thing at this level. There's two
+things at this level for at this level. And if we picked a higher value here, this actually would
+have had at most eight things here and then 16 and you basically get a doubling effect. So what's
+basically happening here is that there is two to the zero things at this level, two to the one here,
+two to the two here and two to three here and so on. So you're getting a doubling effect starting
+at n and that's going to work itself all the way down to zero. So there's approximately n things or
+n plus one things there. So basically in the bottom level, you're going to have roughly two to the
+n things. So you can think about this as a time complexity of big O of two to the n due to the
+doubling effect. So the doubling effect happens because at any F at n, you basically need to sprout
+off into two different pieces here. So your two is coming up because you basically have two
+different options here and the n is happening because you're basically starting at n and working
+yourself all the way down to the base cases. Okay, so this would have a time complexity of big O of two
+to the n and this base complexity is extremely interesting here and a very important lesson. Well,
+remember we drew that recursive call stack. I'm not going to draw it again because it's a little
+annoying, but basically you would have F at five stores information like the value of n and the
+return address. So that stores information. So as F at four, three, two, one, and it goes all the
+way down here. So basically you are storing in the call stack all of this information at the same
+time. So if you're storing some variables and a return address for each of those things in the
+call stack, basically there is O of n many things there because again, you're starting at n which
+is equal to five and you're working yourself down to the bottom of one or maybe down to zero.
+It's the space complexity of big O of n due to the recursive call stack taking up that space.
+So whenever you have a recursive function that's kind of drawn out like this, it's going to be a
+space complexity of the height of that recursive tree. Now you can actually use recursion for many
+problems, although some of the most common ones you'll see is for linked lists because they are
+recursive data structure. They're basically a node that points to another node that itself is
+basically a recursion and eventually it has a base case, which at the end is that it points to null
+or in Python it would be called none. So linked lists are recursive and so their algorithms might
+be recursive. We also have trees. So trees are recursive data structure because they might look
+something like this. We basically have nodes that are pointing to other nodes and again they would
+have base cases. So the leaf nodes here, they would have left and right children of nothing. These
+are going to be pointing to null, which again are base cases. So trees are very recursive and so are
+graphs and you can actually solve many problems just in general using recursion. It's very versatile.
+Okay, so let's do a little fun with recursion here. So one thing that's recursive is definitely
+a linked list. It's a recursive data structure in nature. So we'll have one points over to two,
+points over to three, points over to four, and we'd be given some head to this linked list
+called h. And so what I want to do is print the nodes in reverse order. So I want to see four first
+and then three then two then one. Now we still have to start at the beginning of the list. We'd
+have to start here because that is what we're given. You could think about this as a recursive
+call stack. So you'd start at one. Just don't print it yet and then you could call the next node
+which is going to be two. Don't print that. Just go over to the next node of three and they go
+over to four. And then when we go over to well, nothing, this is basically just null. That would be
+our base case here if null basically just returned back over here and so you'd return back here
+and you could now print this value. So you could print the value of four and then you could return
+back here and then print your value of three. So three and then we'd print again, we'd print two
+and get to our very beginning of the list. We would print one and here you would entirely
+relieve the call stack and so then you would be done. Okay, so let's first talk about the
+Fibonacci sequence. So this is defined as f of zero is equal to zero and you might see other
+base cases but that's generally how it's set up. F1 is equal to one and more generally for any
+end that's bigger than one, you would have that F at n is equal to F at n minus one plus F at n
+minus two. So we would make a recursive function called F at n and so you'd write your base cases
+almost always at the top. So if n is equal to zero, then you would return the value of zero.
+Otherwise, if n is equal to one, then you would return the other base case, which is one
+and then otherwise you'd return the recursive part, which is F at n minus one plus F at n minus
+two. Again, just the sum of the previous two values. Okay, so you could test this out here,
+we could call say F at five that is equal to five. One of your base cases maybe so F at zero is zero,
+F at one is equal to one and if you were to call this with a big value of say F at 100,
+well, you can basically just watch it spin and do nothing. It is going to just sit here and compute
+and technically it would complete eventually, but this has a time complexity of big O of two to
+the n. So that would mean roughly this is trying to do two to the 100, which is a massive number
+here. In fact, if we stop that, we could just calculate that two, you would do it asterisk
+asterisk two to the 100 that is equal to this massive number. It's trying to do approximately
+that many operations that's going to complete eventually in theory, but it's just going to take
+way too long. So this is not going to work for bigger numbers. We could stick at something like
+say F at 12 that's going to be 144. Now again, because of the recursive call stack here,
+this is going to have a space complexity of big O of n basically starting at n. It has to open
+the call stack and get all the way down to the base case before I can start relieving information.
+So this has a time of two to the n and a space of O of n. So whenever you're given a recursive
+formula like this, definitely think about recursion and just in general, many problems can be thought
+of as recursively. Definitely linked lists are recursive. And so we'll write our function that
+basically just prints and refers. So we'll define this as refers. It takes the head of a linked list.
+And before we write this, we would need a linked list to call the song. So let me just paste our
+previous linked list from before. So this is our class to actually get a real linked list. You
+could do something like this. So head of one points over to three to four to seven to nothing.
+So if we print the head, we'll just see the value of one, but we have that linked list. And I think
+it's actually a little better just to call this node, although it doesn't really matter. So our
+base case would be if we don't have a node, so that would mean if we call this on null,
+what that would mean, we got to the end of the list. And so we are ready just to return. If we
+don't have a node, if our node is null, we don't have anything to print. So we just return. Okay,
+if we don't get hit by this if statement, then we are a node. And so before printing ourselves,
+we want to print over the next guy. And so here's the recursion. You would want to first reverse
+on the node dot next. So before processing ourselves, we want to process the next guy until we hit a
+base case, and then we can start printing. After we're back from this function call here, we did
+all the stuff ahead of it. We're back here and we're ready to print ourselves. So we'll just print
+the current node. And that's really all it is here. So if you call reverse on the head of our linked
+list, and sorry, it's going to be a capital H there, you would get the nodes in reverse order.
+Our list was 1347, but we're printing it in the order of 7431. Okay, now this would have a
+time complexity of big of n where n is the number of nodes in the linked list. We have to go through
+the list and then basically return all the way back. And the space complexity, well, that actually
+also has an O of n space. You could actually picture this basically as the call stack. We start at
+the head, but before printing him, we have to go here, then we have to go here, then here,
+then once we hit our base case of nothing, then we can actually start printing. And so basically,
+this whole call stack is open. And so that is also going to be a space of big of n because of the
+recursive call stack. Okay, so I hope this was helpful guys. Drop a like if it was and have a great
+day. Bye bye.
