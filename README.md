@@ -7,4 +7,5 @@ We are trying to eliminate the need to manually search the lecture recordings ju
 ## To Run 
 
 pip install faster-whisper flask
+
 python run_pipeline.py your_lecture.mp4
