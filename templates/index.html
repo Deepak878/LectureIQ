@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LectureIQ - ASR Pipeline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2e;
+            color: #e0e0e0;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #16213e;
+            padding: 20px 40px;
+            border-bottom: 2px solid #0f3460;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            color: #e94560;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .main-container {
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+
+        .upload-area {
+            border: 2px dashed #0f3460;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #16213e;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #e94560;
+            background: #1a1a3e;
+        }
+
+        .upload-area.dragover {
+            border-color: #e94560;
+            background: #1a1a3e;
+        }
+
+        .upload-area h3 {
+            color: #ccc;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .upload-area p {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .file-input-hidden {
+            display: none;
+        }
+
+
+        .file-info-bar {
+            display: none;
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .file-info-bar.visible {
+            display: flex;
+        }
+
+        .file-name-display {
+            color: #e94560;
+            font-weight: 500;
+        }
+
+        .file-size-display {
+            color: #888;
+            font-size: 13px;
+            margin-left: 12px;
+        }
+
+        .btn-transcribe {
+            background: #e94560;
+            color: white;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .btn-transcribe:hover {
+            background: #c73652;
+        }
+
+        .btn-transcribe:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+
+
+        .status-box {
+            display: none;
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .status-box.visible {
+            display: block;
+        }
+
+        .status-text {
+            color: #ccc;
+            font-size: 15px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #333;
+            border-top: 3px solid #e94560;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+        .results-section {
+            display: none;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        .results-header {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            font-size: 13px;
+        }
+
+        .stat-label {
+            color: #888;
+        }
+
+        .stat-value {
+            color: #e94560;
+            font-weight: 600;
+        }
+
+
+        .tab-btns {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+        }
+
+        .tab-btn {
+            background: #0f3460;
+            color: #aaa;
+            border: none;
+            padding: 10px 24px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:first-child {
+            border-radius: 8px 0 0 0;
+        }
+
+        .tab-btn:last-child {
+            border-radius: 0 8px 0 0;
+        }
+
+        .tab-btn.active {
+            background: #16213e;
+            color: #e94560;
+        }
+
+
+        .transcript-box {
+            background: #16213e;
+            border: 1px solid #0f3460;
+            border-radius: 0 0 8px 8px;
+            padding: 24px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .segment-row {
+            padding: 8px 0;
+            border-bottom: 1px solid #0f346033;
+            line-height: 1.6;
+        }
+
+        .segment-row:last-child {
+            border-bottom: none;
+        }
+
+        .seg-timestamp {
+            color: #e94560;
+            font-size: 12px;
+            font-family: monospace;
+            margin-right: 10px;
+        }
+
+        .seg-text {
+            color: #ddd;
+            font-size: 14px;
+        }
+
+        .full-text-view {
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+
+        .error-msg {
+            background: #3d1522;
+            border: 1px solid #e94560;
+            border-radius: 8px;
+            padding: 14px 20px;
+            color: #e94560;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .error-msg.visible {
+            display: block;
+        }
+
+
+        .transcript-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .transcript-box::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+
+        .transcript-box::-webkit-scrollbar-thumb {
+            background: #0f3460;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>LectureIQ</h1>
+        <p>upload a lecture recording and get timestamped transcript</p>
+    </div>
+
+    <div class="main-container">
+
+
+        <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
+            <h3>upload lecture file here or click to browse</h3>
+            <p>file format supported : mp4, mkv, avi, mov, mp3, wav, flac, ogg, m4a</p>
+        </div>
+        <input type="file" id="fileInput" class="file-input-hidden"
+            accept=".mp4,.mkv,.avi,.mov,.webm,.flv,.wmv,.mp3,.wav,.flac,.ogg,.m4a,.aac,.wma">
+
+        <!-- file info + transcribe btn -->
+        <div class="file-info-bar" id="fileInfoBar">
+            <div>
+                <span class="file-name-display" id="fileNameDisplay"></span>
+                <span class="file-size-display" id="fileSizeDisplay"></span>
+            </div>
+            <button class="btn-transcribe" id="transcribeBtn" onclick="startTranscription()">
+                Transcribe
+            </button>
+        </div>
+
+        <!-- error message -->
+        <div class="error-msg" id="errorBox"></div>
+
+        <!-- processing status -->
+        <div class="status-box" id="statusBox">
+            <span class="spinner"></span>
+            <span class="status-text" id="statusText">processing...</span>
+        </div>
+
+        <!-- results -->
+        <div class="results-section" id="resultsSection">
+            <div class="results-header">
+                <div class="stat-item">
+                    <span class="stat-label">language: </span>
+                    <span class="stat-value" id="langDisplay">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">segments: </span>
+                    <span class="stat-value" id="segCountDisplay">-</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">time taken: </span>
+                    <span class="stat-value" id="timeTakenDisplay">-</span>
+                </div>
+            </div>
+
+            <div class="tab-btns">
+                <button class="tab-btn active" onclick="switchTab('timestamps')">Timestamped</button>
+                <button class="tab-btn" onclick="switchTab('fulltext')">Full Text</button>
+            </div>
+
+            <div class="transcript-box">
+                <div id="timestampedView"></div>
+                <div id="fulltextView" class="hidden"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let uploadedFileName = null;
+
+        const dropZone = document.getElementById("dropZone");
+        const fileInput = document.getElementById("fileInput");
+
+        dropZone.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            dropZone.classList.add("dragover");
+        });
+
+        dropZone.addEventListener("dragleave", function () {
+            dropZone.classList.remove("dragover");
+        });
+
+        dropZone.addEventListener("drop", function (e) {
+            e.preventDefault();
+            dropZone.classList.remove("dragover");
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelect(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener("change", function () {
+            if (fileInput.files.length > 0) {
+                handleFileSelect(fileInput.files[0]);
+            }
+        });
+
+
+        function handleFileSelect(file) {
+            // showing file info
+            document.getElementById("fileNameDisplay").textContent = file.name;
+            let sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+            document.getElementById("fileSizeDisplay").textContent = `(${sizeMb} MB)`;
+            document.getElementById("fileInfoBar").classList.add("visible");
+
+            // reseting previous results
+            document.getElementById("resultsSection").classList.remove("visible");
+            hideError();
+
+            // uploading the file to server
+            showStatus("uploading file...");
+
+            let formData = new FormData();
+            formData.append("lecture_file", file);
+
+            fetch("/upload", {
+                method: "POST",
+                body: formData
+            })
+                .then(resp => resp.json())
+                .then(data => {
+                    if (data.error) {
+                        showError(data.error);
+                        hideStatus();
+                        return;
+                    }
+                    uploadedFileName = data.filename;
+                    hideStatus();
+                    document.getElementById("transcribeBtn").disabled = false;
+                })
+                .catch(err => {
+                    showError("upload failed: " + err.message);
+                    hideStatus();
+                });
+        }
+
+        // processing for transcription 
+        function startTranscription() {
+            if (!uploadedFileName) return;
+
+            let btn = document.getElementById("transcribeBtn");
+            btn.disabled = true;
+            hideError();
+            document.getElementById("resultsSection").classList.remove("visible");
+
+            showStatus("running whisper transcription... this may take a while");
+
+            fetch("/transcribe", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ filename: uploadedFileName })
+            })
+                .then(resp => resp.json())
+                .then(data => {
+                    hideStatus();
+                    btn.disabled = false;
+
+                    if (data.error) {
+                        showError(data.error);
+                        return;
+                    }
+
+                    displayResults(data);
+                })
+                .catch(err => {
+                    hideStatus();
+                    btn.disabled = false;
+                    showError("transcription request failed: " + err.message);
+                });
+        }
+
+        // for displaying results 
+        function displayResults(data) {
+            document.getElementById("langDisplay").textContent = data.language;
+            document.getElementById("segCountDisplay").textContent = data.total_segments;
+            document.getElementById("timeTakenDisplay").textContent = data.time_taken + "s";
+
+            //building timestamped view
+            let timestampedHtml = "";
+            for (let seg of data.segments) {
+                let startFormatted = formatSecs(seg.start);
+                let endFormatted = formatSecs(seg.end);
+                timestampedHtml += `<div class="segment-row">
+                    <span class="seg-timestamp">[${startFormatted} → ${endFormatted}]</span>
+                    <span class="seg-text">${escapeHtml(seg.text)}</span>
+                </div>`;
+            }
+            document.getElementById("timestampedView").innerHTML = timestampedHtml;
+
+            // full text view
+            document.getElementById("fulltextView").innerHTML =
+                `<div class="full-text-view">${escapeHtml(data.full_text)}</div>`;
+
+            document.getElementById("resultsSection").classList.add("visible");
+        }
+
+        function switchTab(tab) {
+            let btns = document.querySelectorAll(".tab-btn");
+            btns.forEach(b => b.classList.remove("active"));
+
+            if (tab === "timestamps") {
+                btns[0].classList.add("active");
+                document.getElementById("timestampedView").classList.remove("hidden");
+                document.getElementById("fulltextView").classList.add("hidden");
+            } else {
+                btns[1].classList.add("active");
+                document.getElementById("timestampedView").classList.add("hidden");
+                document.getElementById("fulltextView").classList.remove("hidden");
+            }
+        }
+
+        function formatSecs(totalSecs) {
+            let hrs = Math.floor(totalSecs / 3600);
+            let mins = Math.floor((totalSecs % 3600) / 60);
+            let secs = Math.floor(totalSecs % 60);
+            return String(hrs).padStart(2, "0") + ":" +
+                String(mins).padStart(2, "0") + ":" +
+                String(secs).padStart(2, "0");
+        }
+
+        function escapeHtml(text) {
+            let div = document.createElement("div");
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showStatus(msg) {
+            document.getElementById("statusText").textContent = msg;
+            document.getElementById("statusBox").classList.add("visible");
+        }
+
+        function hideStatus() {
+            document.getElementById("statusBox").classList.remove("visible");
+        }
+
+        function showError(msg) {
+            let box = document.getElementById("errorBox");
+            box.textContent = msg;
+            box.classList.add("visible");
+        }
+
+        function hideError() {
+            document.getElementById("errorBox").classList.remove("visible");
+        }
+    </script>
+
+</body>
+
+</html>
