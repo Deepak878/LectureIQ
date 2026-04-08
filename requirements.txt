@@ -1,0 +1,32 @@
+
+
+# LectureIQ - Python dependencies
+
+# install with: pip install -r requirements.txt
+#
+#  ffmpeg to be installed on system (not pip):
+#   windows: https://ffmpeg.org/download.html  (add to PATH)
+
+
+# web server
+flask>=3.0.0
+werkzeug>=3.0.0
+
+# speech transcription (whisper, runs locally)
+faster-whisper>=1.0.0
+
+# vector database (local file mode, no server needed)
+# pinned to 1.9.1 for python 3.12 compatibility (grpcio issue)
+qdrant-client==1.9.1
+
+# embeddings + cross-encoder reranker (both run locally, no api)
+sentence-transformers>=2.7.0
+
+# llm api for rag answers (free tier available at console.groq.com)
+groq>=0.9.0
+
+# loading api keys from .env file
+python-dotenv>=1.0.0
+
+# cloudinary sdk for image hosting (diagram frames)
+cloudinary>=1.36.0

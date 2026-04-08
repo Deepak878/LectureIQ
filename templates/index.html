@@ -1,554 +1,553 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LectureIQ - ASR Pipeline</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LectureIQ — AI Lecture Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #08080f;
+  --bg2:      #10101c;
+  --bg3:      #181830;
+  --bg4:      #1f1f3a;
+  --border:   #2a2a4a;
+  --bdr-lt:   #363660;
+  --accent:   #7c5cfc;
+  --accent2:  #6344e0;
+  --teal:     #00d4aa;
+  --pink:     #ff6b9d;
+  --yellow:   #ffc857;
+  --txt:      #e6e6f0;
+  --txt2:     #9898b8;
+  --txt3:     #686888;
+  --err:      #ff5555;
+  --r:        12px;
+  --rs:       8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;display:flex;flex-direction:column}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a2e;
-            color: #e0e0e0;
-            min-height: 100vh;
-        }
+/* ── HEADER ── */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+.hdr-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent),var(--teal));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.hdr h1{font-size:18px;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr-sub{color:var(--txt3);font-size:11px;margin-left:4px}
 
-        .header {
-            background: #16213e;
-            padding: 20px 40px;
-            border-bottom: 2px solid #0f3460;
-        }
+/* ── APP LAYOUT ── */
+.app{display:flex;flex:1;overflow:hidden}
+.left-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border)}
+.right-panel{width:420px;display:flex;flex-direction:column;background:var(--bg2)}
 
-        .header h1 {
-            font-size: 24px;
-            color: #e94560;
-            font-weight: 600;
-        }
+@media(max-width:900px){
+  .app{flex-direction:column}
+  .right-panel{width:100%;height:50vh;border-top:1px solid var(--border)}
+  .left-panel{border-right:none}
+}
 
-        .header p {
-            color: #888;
-            font-size: 13px;
-            margin-top: 4px;
-        }
+/* ── LEFT CONTENT (scrollable) ── */
+.left-scroll{flex:1;overflow-y:auto;padding:24px}
 
-        .main-container {
-            max-width: 960px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
+/* ── UPLOAD ── */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--r);padding:40px 24px;text-align:center;cursor:pointer;transition:all .3s;background:var(--bg2)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--accent);background:var(--bg3)}
+.upload-zone h3{color:var(--txt);font-size:15px;font-weight:500;margin:12px 0 6px}
+.upload-zone p{color:var(--txt3);font-size:12px}
+.upload-icon{font-size:36px}
+.file-hidden{display:none}
 
+/* ── FILE BAR ── */
+.file-bar{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:12px 20px;margin-top:14px;align-items:center;justify-content:space-between;animation:slideUp .3s}
+.file-bar.vis{display:flex}
+.finfo{display:flex;align-items:center;gap:10px}
+.ficon{width:36px;height:36px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);display:flex;align-items:center;justify-content:center;font-size:16px}
+.fname{font-size:13px;font-weight:500}
+.fsize{font-size:11px;color:var(--txt3);margin-top:1px}
 
-        .upload-area {
-            border: 2px dashed #0f3460;
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: #16213e;
-            margin-bottom: 20px;
-        }
+/* ── BUTTONS ── */
+.btn{padding:8px 22px;border-radius:var(--rs);border:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px}
+.btn-p{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 3px 12px rgba(124,92,252,.25)}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 5px 20px rgba(124,92,252,.35)}
+.btn-p:disabled{opacity:.35;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-t{background:linear-gradient(135deg,var(--teal),#00b894);color:var(--bg);font-weight:700;box-shadow:0 3px 12px rgba(0,212,170,.2)}
+.btn-t:hover{transform:translateY(-1px)}
+.btn-t:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn-o{background:transparent;color:var(--accent);border:1px solid var(--accent);padding:6px 16px;font-size:12px}
+.btn-o:hover{background:rgba(124,92,252,.08)}
+.btn-sm{padding:5px 14px;font-size:11px}
 
-        .upload-area:hover {
-            border-color: #e94560;
-            background: #1a1a3e;
-        }
+/* ── STATUS ── */
+.status{display:none;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-top:14px;text-align:center;animation:slideUp .3s}
+.status.vis{display:block}
+.spin{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top:2px solid var(--accent);border-radius:50%;animation:sp .7s linear infinite;margin-right:8px;vertical-align:middle}
+.spin-sm{width:14px;height:14px;border-width:2px;margin-right:6px}
+.stext{color:var(--txt2);font-size:14px;vertical-align:middle}
 
-        .upload-area.dragover {
-            border-color: #e94560;
-            background: #1a1a3e;
-        }
+/* ── ERROR ── */
+.err{display:none;background:rgba(255,85,85,.06);border:1px solid rgba(255,85,85,.25);border-radius:var(--rs);padding:10px 16px;margin-top:12px;color:var(--err);font-size:13px;animation:slideUp .3s}
+.err.vis{display:flex;align-items:center;gap:8px}
 
-        .upload-area h3 {
-            color: #ccc;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
+/* ── RESULTS ── */
+.results{display:none;margin-top:20px;animation:slideUp .35s}
+.results.vis{display:block}
 
-        .upload-area p {
-            color: #666;
-            font-size: 13px;
-        }
+.stats{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.chip{background:var(--bg2);border:1px solid var(--border);border-radius:100px;padding:5px 16px;font-size:12px;display:flex;align-items:center;gap:6px}
+.chip .l{color:var(--txt3)}
+.chip .v{color:var(--teal);font-weight:600;font-family:'JetBrains Mono',monospace}
 
-        .file-input-hidden {
-            display: none;
-        }
+/* ── TABS ── */
+.tabs{display:flex;gap:2px;background:var(--bg2);padding:3px;border:1px solid var(--border);border-bottom:none;border-radius:var(--r) var(--r) 0 0}
+.tab{flex:1;padding:10px 14px;border:none;background:transparent;color:var(--txt3);font-family:'Inter',sans-serif;font-size:12px;font-weight:500;cursor:pointer;border-radius:var(--rs);transition:all .2s;text-align:center}
+.tab:hover{color:var(--txt);background:rgba(255,255,255,.02)}
+.tab.act{background:var(--bg3);color:var(--accent);box-shadow:0 1px 6px rgba(0,0,0,.15)}
+.badge{background:var(--teal);color:var(--bg);font-size:9px;padding:1px 7px;border-radius:100px;margin-left:4px;font-weight:700}
 
+.tcontent{background:var(--bg3);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r) var(--r);max-height:520px;overflow-y:auto;padding:20px}
+.tpane{display:none}
+.tpane.act{display:block}
 
-        .file-info-bar {
-            display: none;
-            background: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 8px;
-            padding: 14px 20px;
-            margin-bottom: 20px;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* ── TRANSCRIPT ── */
+.seg{padding:8px 0;border-bottom:1px solid rgba(42,42,69,.4);display:flex;gap:14px;align-items:baseline}
+.seg:last-child{border-bottom:none}
+.seg:hover{background:rgba(124,92,252,.02);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:4px}
+.seg-t{color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:11px;white-space:nowrap;min-width:110px;opacity:.7}
+.seg-x{font-size:13px;line-height:1.65;color:var(--txt)}
+.full-text{color:var(--txt2);font-size:13px;line-height:1.9;white-space:pre-wrap}
 
-        .file-info-bar.visible {
-            display: flex;
-        }
+/* ── SUMMARY ── */
+.summary-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.summary-box h3{font-size:14px;color:var(--teal);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.summary-text{color:var(--txt2);font-size:13px;line-height:1.8;white-space:pre-wrap}
 
-        .file-name-display {
-            color: #e94560;
-            font-weight: 500;
-        }
+/* ── DIAGRAMS ── */
+.dgrid{display:flex;flex-direction:column;gap:16px}
+.dcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.dcard:hover{border-color:var(--bdr-lt)}
+.dlayout{display:grid;grid-template-columns:1fr 1fr;gap:0}
+@media(max-width:700px){.dlayout{grid-template-columns:1fr}}
+.dimg{position:relative;background:#000;display:flex;align-items:center;justify-content:center;min-height:200px}
+.dimg img{width:100%;height:100%;object-fit:contain;max-height:280px}
+.dts{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.7);color:var(--teal);font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:6px;border:1px solid rgba(0,212,170,.15)}
+.dinfo{padding:16px;display:flex;flex-direction:column;gap:10px}
+.dhead{display:flex;align-items:center;justify-content:space-between}
+.dlabel{font-size:13px;font-weight:600}
+.dkw{font-size:10px;background:rgba(124,92,252,.1);color:var(--accent);padding:2px 8px;border-radius:100px;border:1px solid rgba(124,92,252,.15)}
+.dtranscript{color:var(--txt3);font-size:12px;line-height:1.5;font-style:italic;background:rgba(0,0,0,.15);padding:10px;border-radius:var(--rs);border-left:3px solid var(--accent);max-height:80px;overflow-y:auto}
+.dactions{display:flex;gap:6px;margin-top:auto}
 
-        .file-size-display {
-            color: #888;
-            font-size: 13px;
-            margin-left: 12px;
-        }
+.apanel{display:none;border-top:1px solid var(--border);padding:16px;background:var(--bg);animation:slideUp .3s}
+.apanel.vis{display:block}
+.apanel h4{font-size:12px;font-weight:600;color:var(--teal);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.atxt{color:var(--txt2);font-size:12px;line-height:1.75;white-space:pre-wrap}
 
-        .btn-transcribe {
-            background: #e94560;
-            color: white;
-            border: none;
-            padding: 10px 28px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
+.no-diag{text-align:center;padding:40px 20px;color:var(--txt3)}
+.no-diag p{font-size:13px;max-width:380px;margin:8px auto 0}
 
-        .btn-transcribe:hover {
-            background: #c73652;
-        }
+/* ═══════════════════════════════════
+   CHAT PANEL (right side)
+   ═══════════════════════════════════ */
+.chat-hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.chat-hdr h2{font-size:14px;font-weight:600;color:var(--txt)}
+.chat-hdr span{font-size:10px;color:var(--txt3);background:var(--bg3);padding:2px 8px;border-radius:100px}
 
-        .btn-transcribe:disabled {
-            background: #555;
-            cursor: not-allowed;
-        }
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:14px}
 
+.msg{max-width:95%;animation:slideUp .2s}
+.msg-user{align-self:flex-end}
+.msg-ai{align-self:flex-start}
 
-        .status-box {
-            display: none;
-            background: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
+.msg-bubble{padding:10px 14px;border-radius:var(--r);font-size:13px;line-height:1.65}
+.msg-user .msg-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg-ai .msg-bubble{background:var(--bg3);color:var(--txt);border-bottom-left-radius:4px;border:1px solid var(--border)}
 
-        .status-box.visible {
-            display: block;
-        }
+/* Source cards inside AI messages */
+.src-cards{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.src-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;font-size:11px;display:flex;gap:10px;align-items:center}
+.src-card.diagram-src{border-left:3px solid var(--pink)}
+.src-card.transcript-src{border-left:3px solid var(--accent)}
+.src-tag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;white-space:nowrap}
+.src-tag.diag{background:rgba(255,107,157,.12);color:var(--pink)}
+.src-tag.trans{background:rgba(124,92,252,.12);color:var(--accent)}
+.src-ts{font-family:'JetBrains Mono',monospace;color:var(--teal);font-size:10px;white-space:nowrap}
+.src-txt{color:var(--txt3);font-size:11px;line-height:1.4;flex:1;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.src-img{width:50px;height:35px;border-radius:4px;object-fit:cover;border:1px solid var(--border)}
 
-        .status-text {
-            color: #ccc;
-            font-size: 15px;
-        }
+.chat-welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--txt3)}
+.chat-welcome-icon{font-size:40px;margin-bottom:12px;opacity:.5}
+.chat-welcome h3{font-size:14px;color:var(--txt2);margin-bottom:6px}
+.chat-welcome p{font-size:12px;max-width:280px}
 
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #333;
-            border-top: 3px solid #e94560;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 10px;
-            vertical-align: middle;
-        }
+.chat-input-wrap{padding:12px 16px;border-top:1px solid var(--border);display:flex;gap:8px;background:var(--bg2)}
+.chat-input{flex:1;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;outline:none;resize:none}
+.chat-input:focus{border-color:var(--accent)}
+.chat-input::placeholder{color:var(--txt3)}
+.chat-send{background:var(--accent);border:none;border-radius:var(--rs);width:40px;height:40px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:16px;transition:background .2s}
+.chat-send:hover{background:var(--accent2)}
+.chat-send:disabled{opacity:.3;cursor:not-allowed}
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
+/* ── SCROLLBAR ── */
+.tcontent::-webkit-scrollbar,.chat-msgs::-webkit-scrollbar,.dtranscript::-webkit-scrollbar{width:5px}
+.tcontent::-webkit-scrollbar-track,.chat-msgs::-webkit-scrollbar-track{background:transparent}
+.tcontent::-webkit-scrollbar-thumb,.chat-msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 
-
-        .results-section {
-            display: none;
-        }
-
-        .results-section.visible {
-            display: block;
-        }
-
-        .results-header {
-            background: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 8px;
-            padding: 16px 20px;
-            margin-bottom: 16px;
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .stat-item {
-            font-size: 13px;
-        }
-
-        .stat-label {
-            color: #888;
-        }
-
-        .stat-value {
-            color: #e94560;
-            font-weight: 600;
-        }
-
-
-        .tab-btns {
-            display: flex;
-            gap: 0;
-            margin-bottom: 0;
-        }
-
-        .tab-btn {
-            background: #0f3460;
-            color: #aaa;
-            border: none;
-            padding: 10px 24px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.2s;
-        }
-
-        .tab-btn:first-child {
-            border-radius: 8px 0 0 0;
-        }
-
-        .tab-btn:last-child {
-            border-radius: 0 8px 0 0;
-        }
-
-        .tab-btn.active {
-            background: #16213e;
-            color: #e94560;
-        }
-
-
-        .transcript-box {
-            background: #16213e;
-            border: 1px solid #0f3460;
-            border-radius: 0 0 8px 8px;
-            padding: 24px;
-            max-height: 500px;
-            overflow-y: auto;
-        }
-
-        .segment-row {
-            padding: 8px 0;
-            border-bottom: 1px solid #0f346033;
-            line-height: 1.6;
-        }
-
-        .segment-row:last-child {
-            border-bottom: none;
-        }
-
-        .seg-timestamp {
-            color: #e94560;
-            font-size: 12px;
-            font-family: monospace;
-            margin-right: 10px;
-        }
-
-        .seg-text {
-            color: #ddd;
-            font-size: 14px;
-        }
-
-        .full-text-view {
-            color: #ccc;
-            font-size: 14px;
-            line-height: 1.8;
-            white-space: pre-wrap;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-
-        .error-msg {
-            background: #3d1522;
-            border: 1px solid #e94560;
-            border-radius: 8px;
-            padding: 14px 20px;
-            color: #e94560;
-            margin-bottom: 20px;
-            display: none;
-        }
-
-        .error-msg.visible {
-            display: block;
-        }
-
-
-        .transcript-box::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .transcript-box::-webkit-scrollbar-track {
-            background: #1a1a2e;
-        }
-
-        .transcript-box::-webkit-scrollbar-thumb {
-            background: #0f3460;
-            border-radius: 4px;
-        }
-    </style>
+/* ── ANIM ── */
+@keyframes sp{to{transform:rotate(360deg)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.hidden{display:none!important}
+</style>
 </head>
-
 <body>
 
-    <div class="header">
-        <h1>LectureIQ</h1>
-        <p>upload a lecture recording and get timestamped transcript</p>
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-icon">🎓</div>
+  <h1>LectureIQ</h1>
+  <span class="hdr-sub">AI Lecture Assistant</span>
+</header>
+
+<div class="app">
+
+<!-- ════════ LEFT PANEL ════════ -->
+<div class="left-panel">
+<div class="left-scroll">
+
+  <!-- Upload -->
+  <div class="upload-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <div class="upload-icon">📁</div>
+    <h3>Drop your lecture file here or click to browse</h3>
+    <p>Supports MP4, MKV, AVI, MOV, MP3, WAV, FLAC, OGG, M4A</p>
+  </div>
+  <input type="file" id="fileInput" class="file-hidden"
+    accept=".mp4,.mkv,.avi,.mov,.webm,.flv,.wmv,.mp3,.wav,.flac,.ogg,.m4a,.aac,.wma">
+
+  <!-- File bar -->
+  <div class="file-bar" id="fileBar">
+    <div class="finfo">
+      <div class="ficon">🎬</div>
+      <div><div class="fname" id="fName"></div><div class="fsize" id="fSize"></div></div>
+    </div>
+    <button class="btn btn-p" id="transcribeBtn" onclick="startTranscription()" disabled>✨ Transcribe</button>
+  </div>
+
+  <div class="err" id="errBox"><span>⚠️</span><span id="errTxt"></span></div>
+  <div class="status" id="statusBox"><span class="spin"></span><span class="stext" id="sTxt">Processing...</span></div>
+
+  <!-- Summary -->
+  <div class="summary-box hidden" id="summaryBox">
+    <h3>📋 Lecture Summary</h3>
+    <div class="summary-text" id="summaryText"></div>
+  </div>
+
+  <!-- Results -->
+  <div class="results" id="results">
+    <div class="stats">
+      <div class="chip"><span class="l">Language</span><span class="v" id="sLang">-</span></div>
+      <div class="chip"><span class="l">Segments</span><span class="v" id="sSegs">-</span></div>
+      <div class="chip"><span class="l">Time</span><span class="v" id="sTime">-</span></div>
+      <div class="chip" id="sDiagChip" style="display:none"><span class="l">Visuals</span><span class="v" id="sDiag">-</span></div>
     </div>
 
-    <div class="main-container">
+    <div class="tabs">
+      <button class="tab act" onclick="switchTab('transcript')" data-t="transcript">📝 Transcript</button>
+      <button class="tab" onclick="switchTab('fulltext')" data-t="fulltext">📄 Full Text</button>
+      <button class="tab" onclick="switchTab('diagrams')" data-t="diagrams">🖼️ Visuals <span class="badge hidden" id="dBadge">0</span></button>
+    </div>
 
+    <div class="tcontent">
+      <div class="tpane act" id="pTranscript"></div>
+      <div class="tpane" id="pFulltext"></div>
+      <div class="tpane" id="pDiagrams"></div>
+    </div>
+  </div>
 
-        <div class="upload-area" id="dropZone" onclick="document.getElementById('fileInput').click()">
-            <h3>upload lecture file here or click to browse</h3>
-            <p>file format supported : mp4, mkv, avi, mov, mp3, wav, flac, ogg, m4a</p>
+</div>
+</div>
+
+<!-- ════════ RIGHT PANEL — CHAT ════════ -->
+<div class="right-panel">
+  <div class="chat-hdr">
+    <span style="font-size:16px">💬</span>
+    <h2>Ask about this lecture</h2>
+    <span>AI Chat</span>
+  </div>
+
+  <div class="chat-msgs" id="chatMsgs">
+    <div class="chat-welcome" id="chatWelcome">
+      <div class="chat-welcome-icon">🧠</div>
+      <h3>Lecture Q&A</h3>
+      <p>Upload and transcribe a lecture, then ask any question. I'll answer using the transcript and diagram analysis.</p>
+    </div>
+  </div>
+
+  <div class="chat-input-wrap">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Ask a question about the lecture..."
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}">
+    <button class="chat-send" id="chatSend" onclick="sendChat()" disabled>➤</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+
+<script>
+// ═══════ STATE ═══════
+let uploadedFileName = null;
+let diagramsData = [];
+let chatReady = false;
+
+// ═══════ UPLOAD ═══════
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length) { fileInput.files = e.dataTransfer.files; handleFile(e.dataTransfer.files[0]); }
+});
+fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFile(fileInput.files[0]); });
+
+function handleFile(file) {
+  document.getElementById('fName').textContent = file.name;
+  document.getElementById('fSize').textContent = (file.size/1048576).toFixed(1) + ' MB';
+  document.getElementById('fileBar').classList.add('vis');
+  document.getElementById('results').classList.remove('vis');
+  document.getElementById('summaryBox').classList.add('hidden');
+  hideErr(); diagramsData = []; chatReady = false;
+
+  showStatus('Uploading file...');
+  const fd = new FormData(); fd.append('lecture_file', file);
+  fetch('/upload', {method:'POST', body:fd}).then(r=>r.json()).then(d=>{
+    if(d.error){showErr(d.error);hideStatus();return;}
+    uploadedFileName = d.filename; hideStatus();
+    document.getElementById('transcribeBtn').disabled = false;
+  }).catch(e=>{showErr('Upload failed: '+e.message);hideStatus();});
+}
+
+// ═══════ TRANSCRIBE ═══════
+function startTranscription() {
+  if(!uploadedFileName) return;
+  const btn = document.getElementById('transcribeBtn');
+  btn.disabled = true; hideErr();
+  document.getElementById('results').classList.remove('vis');
+  document.getElementById('summaryBox').classList.add('hidden');
+
+  showStatus('Running transcription + visual analysis — this may take a few minutes...');
+
+  fetch('/transcribe', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({filename: uploadedFileName})
+  }).then(r=>r.json()).then(d=>{
+    hideStatus(); btn.disabled = false;
+    if(d.error){showErr(d.error);return;}
+    displayResults(d);
+    chatReady = true;
+    document.getElementById('chatSend').disabled = false;
+    document.getElementById('chatInput').placeholder = 'Ask a question about the lecture...';
+    // auto-generate summary
+    generateSummary();
+  }).catch(e=>{ hideStatus(); btn.disabled=false; showErr('Failed: '+e.message); });
+}
+
+// ═══════ DISPLAY RESULTS ═══════
+function displayResults(d) {
+  document.getElementById('sLang').textContent = d.language||'-';
+  document.getElementById('sSegs').textContent = d.total_segments||'-';
+  document.getElementById('sTime').textContent = (d.time_taken||0)+'s';
+
+  // Transcript
+  let h = '';
+  for(const s of d.segments) {
+    h += `<div class="seg"><span class="seg-t">${fmt(s.start)} → ${fmt(s.end)}</span><span class="seg-x">${esc(s.text)}</span></div>`;
+  }
+  document.getElementById('pTranscript').innerHTML = h;
+  document.getElementById('pFulltext').innerHTML = `<div class="full-text">${esc(d.full_text)}</div>`;
+
+  // Diagrams
+  diagramsData = d.diagrams || [];
+  renderDiagrams();
+
+  document.getElementById('results').classList.add('vis');
+}
+
+// ═══════ RENDER DIAGRAMS ═══════
+function renderDiagrams() {
+  const c = document.getElementById('pDiagrams');
+  const badge = document.getElementById('dBadge');
+  const chip = document.getElementById('sDiagChip');
+
+  if(!diagramsData.length) {
+    c.innerHTML = '<div class="no-diag"><div style="font-size:36px;opacity:.4">🔍</div><p>No visual content detected. Diagrams are extracted when the lecturer mentions visuals.</p></div>';
+    badge.classList.add('hidden'); chip.style.display='none'; return;
+  }
+
+  badge.textContent = diagramsData.length; badge.classList.remove('hidden');
+  chip.style.display='flex'; document.getElementById('sDiag').textContent = diagramsData.length;
+
+  let h = '<div class="dgrid">';
+  for(let i=0;i<diagramsData.length;i++){
+    const d = diagramsData[i];
+    const img = d.cloudinary_url || d.local_url || '';
+    const ts = fmt(d.timestamp||d.start);
+    const hasAnalysis = d.analysis && !d.analysis.startsWith('Error') && !d.analysis.startsWith('Analysis failed');
+
+    h += `<div class="dcard" id="dc${i}">
+      <div class="dlayout">
+        <div class="dimg">
+          ${img ? `<img src="${esc(img)}" alt="Visual ${d.index}" loading="lazy">` : '<div style="color:var(--txt3);font-size:13px">No image</div>'}
+          <div class="dts">⏱ ${ts}</div>
         </div>
-        <input type="file" id="fileInput" class="file-input-hidden"
-            accept=".mp4,.mkv,.avi,.mov,.webm,.flv,.wmv,.mp3,.wav,.flac,.ogg,.m4a,.aac,.wma">
-
-        <!-- file info + transcribe btn -->
-        <div class="file-info-bar" id="fileInfoBar">
-            <div>
-                <span class="file-name-display" id="fileNameDisplay"></span>
-                <span class="file-size-display" id="fileSizeDisplay"></span>
-            </div>
-            <button class="btn-transcribe" id="transcribeBtn" onclick="startTranscription()">
-                Transcribe
+        <div class="dinfo">
+          <div class="dhead"><span class="dlabel">Visual #${d.index}</span><span class="dkw">${esc(d.keyword_matched)}</span></div>
+          <div class="dtranscript">"${esc(d.transcript_text)}"</div>
+          <div class="dactions">
+            <button class="btn btn-t btn-sm" id="abtn${i}" onclick="toggleAnalysis(${i})">
+              ${hasAnalysis ? '👁 Show Analysis' : '🤖 Analyze'}
             </button>
+            ${img ? `<a href="${esc(img)}" target="_blank" class="btn btn-o btn-sm">↗ Open</a>` : ''}
+          </div>
         </div>
+      </div>
+      <div class="apanel" id="ap${i}">
+        ${hasAnalysis ? `<h4>🧠 AI Analysis</h4><div class="atxt">${esc(d.analysis)}</div>` : ''}
+      </div>
+    </div>`;
+  }
+  h += '</div>';
+  c.innerHTML = h;
+}
 
-        <!-- error message -->
-        <div class="error-msg" id="errorBox"></div>
+function toggleAnalysis(i) {
+  const d = diagramsData[i];
+  const panel = document.getElementById('ap'+i);
+  const btn = document.getElementById('abtn'+i);
 
-        <!-- processing status -->
-        <div class="status-box" id="statusBox">
-            <span class="spinner"></span>
-            <span class="status-text" id="statusText">processing...</span>
-        </div>
+  if(d.analysis && !d.analysis.startsWith('Error') && !d.analysis.startsWith('Analysis failed')) {
+    panel.classList.toggle('vis'); return;
+  }
 
-        <!-- results -->
-        <div class="results-section" id="resultsSection">
-            <div class="results-header">
-                <div class="stat-item">
-                    <span class="stat-label">language: </span>
-                    <span class="stat-value" id="langDisplay">-</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">segments: </span>
-                    <span class="stat-value" id="segCountDisplay">-</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-label">time taken: </span>
-                    <span class="stat-value" id="timeTakenDisplay">-</span>
-                </div>
-            </div>
+  // fetch analysis on demand
+  btn.disabled = true; btn.innerHTML = '<span class="spin spin-sm"></span>Analyzing...';
+  panel.innerHTML = '<div style="padding:12px;color:var(--txt3);font-size:12px"><span class="spin spin-sm"></span>Sending to AI for analysis...</div>';
+  panel.classList.add('vis');
 
-            <div class="tab-btns">
-                <button class="tab-btn active" onclick="switchTab('timestamps')">Timestamped</button>
-                <button class="tab-btn" onclick="switchTab('fulltext')">Full Text</button>
-            </div>
+  fetch('/analyze-diagram', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({frame_rel_path: d.frame_rel_path})
+  }).then(r=>r.json()).then(data=>{
+    btn.disabled = false;
+    if(data.error){ panel.innerHTML = `<h4>⚠️ Error</h4><div class="atxt" style="color:var(--err)">${esc(data.error)}</div>`; btn.innerHTML='🤖 Retry'; return; }
+    d.analysis = data.analysis;
+    panel.innerHTML = `<h4>🧠 AI Analysis</h4><div class="atxt">${esc(data.analysis)}</div>`;
+    btn.innerHTML = '👁 Toggle Analysis';
+  }).catch(e=>{ btn.disabled=false; btn.innerHTML='🤖 Retry'; panel.innerHTML=`<div class="atxt" style="color:var(--err)">Failed: ${esc(e.message)}</div>`; });
+}
 
-            <div class="transcript-box">
-                <div id="timestampedView"></div>
-                <div id="fulltextView" class="hidden"></div>
-            </div>
-        </div>
+// ═══════ SUMMARY ═══════
+function generateSummary() {
+  const box = document.getElementById('summaryBox');
+  const txt = document.getElementById('summaryText');
+  box.classList.remove('hidden');
+  txt.innerHTML = '<span class="spin spin-sm"></span> Generating lecture summary...';
 
-    </div>
+  fetch('/summary', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({filename: uploadedFileName})
+  }).then(r=>r.json()).then(d=>{
+    txt.textContent = d.summary || d.error || 'No summary available.';
+  }).catch(e=>{ txt.textContent = 'Summary failed: ' + e.message; });
+}
 
-    <script>
-        let uploadedFileName = null;
+// ═══════ CHAT ═══════
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const q = input.value.trim();
+  if(!q || !chatReady) return;
 
-        const dropZone = document.getElementById("dropZone");
-        const fileInput = document.getElementById("fileInput");
+  // remove welcome
+  document.getElementById('chatWelcome')?.remove();
 
-        dropZone.addEventListener("dragover", function (e) {
-            e.preventDefault();
-            dropZone.classList.add("dragover");
-        });
+  // user msg
+  addMsg('user', q);
+  input.value = '';
 
-        dropZone.addEventListener("dragleave", function () {
-            dropZone.classList.remove("dragover");
-        });
+  // loading
+  const loadId = 'load_' + Date.now();
+  addMsg('ai', '<span class="spin spin-sm"></span> Thinking...', loadId);
 
-        dropZone.addEventListener("drop", function (e) {
-            e.preventDefault();
-            dropZone.classList.remove("dragover");
-            if (e.dataTransfer.files.length > 0) {
-                fileInput.files = e.dataTransfer.files;
-                handleFileSelect(e.dataTransfer.files[0]);
-            }
-        });
+  fetch('/chat', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({filename: uploadedFileName, question: q})
+  }).then(r=>r.json()).then(d=>{
+    const el = document.getElementById(loadId);
+    if(!el) return;
 
-        fileInput.addEventListener("change", function () {
-            if (fileInput.files.length > 0) {
-                handleFileSelect(fileInput.files[0]);
-            }
-        });
+    if(d.error){ el.querySelector('.msg-bubble').innerHTML = `<span style="color:var(--err)">${esc(d.error)}</span>`; return; }
 
+    let html = esc(d.answer);
 
-        function handleFileSelect(file) {
-            // showing file info
-            document.getElementById("fileNameDisplay").textContent = file.name;
-            let sizeMb = (file.size / (1024 * 1024)).toFixed(1);
-            document.getElementById("fileSizeDisplay").textContent = `(${sizeMb} MB)`;
-            document.getElementById("fileInfoBar").classList.add("visible");
-
-            // reseting previous results
-            document.getElementById("resultsSection").classList.remove("visible");
-            hideError();
-
-            // uploading the file to server
-            showStatus("uploading file...");
-
-            let formData = new FormData();
-            formData.append("lecture_file", file);
-
-            fetch("/upload", {
-                method: "POST",
-                body: formData
-            })
-                .then(resp => resp.json())
-                .then(data => {
-                    if (data.error) {
-                        showError(data.error);
-                        hideStatus();
-                        return;
-                    }
-                    uploadedFileName = data.filename;
-                    hideStatus();
-                    document.getElementById("transcribeBtn").disabled = false;
-                })
-                .catch(err => {
-                    showError("upload failed: " + err.message);
-                    hideStatus();
-                });
+    // source cards
+    if(d.sources && d.sources.length) {
+      html += '<div class="src-cards">';
+      for(const s of d.sources) {
+        if(s.type === 'diagram') {
+          html += `<div class="src-card diagram-src">
+            ${s.image_url ? `<img class="src-img" src="${esc(s.image_url)}">` : ''}
+            <div style="flex:1">
+              <span class="src-tag diag">📊 FROM DIAGRAM</span>
+              <span class="src-ts">${esc(s.timestamp)}</span>
+              <div class="src-txt">${esc(s.text)}</div>
+            </div></div>`;
+        } else {
+          html += `<div class="src-card transcript-src">
+            <div style="flex:1">
+              <span class="src-tag trans">📝 TRANSCRIPT</span>
+              <span class="src-ts">${esc(s.timestamp)}</span>
+              <div class="src-txt">${esc(s.text)}</div>
+            </div></div>`;
         }
+      }
+      html += '</div>';
+    }
 
-        // processing for transcription 
-        function startTranscription() {
-            if (!uploadedFileName) return;
+    el.querySelector('.msg-bubble').innerHTML = html;
+    scrollChat();
+  }).catch(e=>{
+    const el = document.getElementById(loadId);
+    if(el) el.querySelector('.msg-bubble').innerHTML = `<span style="color:var(--err)">Error: ${esc(e.message)}</span>`;
+  });
+}
 
-            let btn = document.getElementById("transcribeBtn");
-            btn.disabled = true;
-            hideError();
-            document.getElementById("resultsSection").classList.remove("visible");
+function addMsg(role, content, id) {
+  const wrap = document.createElement('div');
+  wrap.className = `msg msg-${role}`;
+  if(id) wrap.id = id;
+  wrap.innerHTML = `<div class="msg-bubble">${content}</div>`;
+  document.getElementById('chatMsgs').appendChild(wrap);
+  scrollChat();
+}
 
-            showStatus("running whisper transcription... this may take a while");
+function scrollChat() {
+  const c = document.getElementById('chatMsgs');
+  c.scrollTop = c.scrollHeight;
+}
 
-            fetch("/transcribe", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ filename: uploadedFileName })
-            })
-                .then(resp => resp.json())
-                .then(data => {
-                    hideStatus();
-                    btn.disabled = false;
+// ═══════ TABS ═══════
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('act'));
+  document.querySelectorAll('.tpane').forEach(p=>p.classList.remove('act'));
+  document.querySelector(`[data-t="${t}"]`).classList.add('act');
+  const map = {transcript:'pTranscript', fulltext:'pFulltext', diagrams:'pDiagrams'};
+  document.getElementById(map[t]).classList.add('act');
+}
 
-                    if (data.error) {
-                        showError(data.error);
-                        return;
-                    }
-
-                    displayResults(data);
-                })
-                .catch(err => {
-                    hideStatus();
-                    btn.disabled = false;
-                    showError("transcription request failed: " + err.message);
-                });
-        }
-
-        // for displaying results 
-        function displayResults(data) {
-            document.getElementById("langDisplay").textContent = data.language;
-            document.getElementById("segCountDisplay").textContent = data.total_segments;
-            document.getElementById("timeTakenDisplay").textContent = data.time_taken + "s";
-
-            //building timestamped view
-            let timestampedHtml = "";
-            for (let seg of data.segments) {
-                let startFormatted = formatSecs(seg.start);
-                let endFormatted = formatSecs(seg.end);
-                timestampedHtml += `<div class="segment-row">
-                    <span class="seg-timestamp">[${startFormatted} → ${endFormatted}]</span>
-                    <span class="seg-text">${escapeHtml(seg.text)}</span>
-                </div>`;
-            }
-            document.getElementById("timestampedView").innerHTML = timestampedHtml;
-
-            // full text view
-            document.getElementById("fulltextView").innerHTML =
-                `<div class="full-text-view">${escapeHtml(data.full_text)}</div>`;
-
-            document.getElementById("resultsSection").classList.add("visible");
-        }
-
-        function switchTab(tab) {
-            let btns = document.querySelectorAll(".tab-btn");
-            btns.forEach(b => b.classList.remove("active"));
-
-            if (tab === "timestamps") {
-                btns[0].classList.add("active");
-                document.getElementById("timestampedView").classList.remove("hidden");
-                document.getElementById("fulltextView").classList.add("hidden");
-            } else {
-                btns[1].classList.add("active");
-                document.getElementById("timestampedView").classList.add("hidden");
-                document.getElementById("fulltextView").classList.remove("hidden");
-            }
-        }
-
-        function formatSecs(totalSecs) {
-            let hrs = Math.floor(totalSecs / 3600);
-            let mins = Math.floor((totalSecs % 3600) / 60);
-            let secs = Math.floor(totalSecs % 60);
-            return String(hrs).padStart(2, "0") + ":" +
-                String(mins).padStart(2, "0") + ":" +
-                String(secs).padStart(2, "0");
-        }
-
-        function escapeHtml(text) {
-            let div = document.createElement("div");
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        function showStatus(msg) {
-            document.getElementById("statusText").textContent = msg;
-            document.getElementById("statusBox").classList.add("visible");
-        }
-
-        function hideStatus() {
-            document.getElementById("statusBox").classList.remove("visible");
-        }
-
-        function showError(msg) {
-            let box = document.getElementById("errorBox");
-            box.textContent = msg;
-            box.classList.add("visible");
-        }
-
-        function hideError() {
-            document.getElementById("errorBox").classList.remove("visible");
-        }
-    </script>
-
+// ═══════ HELPERS ═══════
+function fmt(s){const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=Math.floor(s%60);return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0')}
+function esc(t){if(!t)return '';const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function showStatus(m){document.getElementById('sTxt').textContent=m;document.getElementById('statusBox').classList.add('vis')}
+function hideStatus(){document.getElementById('statusBox').classList.remove('vis')}
+function showErr(m){document.getElementById('errTxt').textContent=m;document.getElementById('errBox').classList.add('vis')}
+function hideErr(){document.getElementById('errBox').classList.remove('vis')}
+</script>
 </body>
-
 </html>

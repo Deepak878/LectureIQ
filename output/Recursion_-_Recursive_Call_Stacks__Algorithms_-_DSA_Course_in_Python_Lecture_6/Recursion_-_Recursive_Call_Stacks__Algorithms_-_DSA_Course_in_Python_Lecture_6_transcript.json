@@ -1,0 +1,2373 @@
+{
+  "language": "en",
+  "language_confidence": 1.0,
+  "total_segments": 473,
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 4.16,
+      "text": "Hey guys, Greg here. Let's talk about a popular algorithm known as recursion."
+    },
+    {
+      "start": 4.16,
+      "end": 8.0,
+      "text": "Now to illustrate this idea, let's talk about the Fibonacci number problems."
+    },
+    {
+      "start": 8.0,
+      "end": 12.64,
+      "text": "So the Fibonacci numbers are a sequence generally starting at 0 and 1."
+    },
+    {
+      "start": 12.64,
+      "end": 17.44,
+      "text": "And then the next number is recursively defined as the sum of the previous two values."
+    },
+    {
+      "start": 17.44,
+      "end": 20.56,
+      "text": "So the next number would be 0 plus 1, which is 1."
+    },
+    {
+      "start": 20.56,
+      "end": 24.0,
+      "text": "This would be 1 plus 1, which is 2, 2 plus 1, which is 3."
+    },
+    {
+      "start": 24.0,
+      "end": 26.96,
+      "text": "We'd get 5, 8, 13, and so on."
+    },
+    {
+      "start": 26.96,
+      "end": 29.44,
+      "text": "That sequence is actually infinite. That can keep going."
+    },
+    {
+      "start": 29.44,
+      "end": 34.24,
+      "text": "So formally you would define this with a function, saying something like F at 0 is equal to 0."
+    },
+    {
+      "start": 34.24,
+      "end": 38.4,
+      "text": "That's 1 base case. F at 1 is equal to 1. That's another base case."
+    },
+    {
+      "start": 38.4,
+      "end": 45.12,
+      "text": "But more generally, for any end that's bigger than 1, we would have that F at n is equal to the sum of the previous two,"
+    },
+    {
+      "start": 45.12,
+      "end": 48.96,
+      "text": "which is F at n minus 1 plus F at n minus 2."
+    },
+    {
+      "start": 48.96,
+      "end": 52.56,
+      "text": "So this is the formal way of saying your base case, F at 0 is 0."
+    },
+    {
+      "start": 52.56,
+      "end": 58.96,
+      "text": "You could think about this basically as an index here. F at 0 is 0 and F at 1 is 1."
+    },
+    {
+      "start": 58.96,
+      "end": 65.44,
+      "text": "And then for any end that's bigger than 1 here, so for 2, 3, 4, 5, 6, and so on,"
+    },
+    {
+      "start": 65.44,
+      "end": 70.16,
+      "text": "you'd have that F at n is equal to F at n minus 1 plus F at n minus 2."
+    },
+    {
+      "start": 70.16,
+      "end": 72.64,
+      "text": "And if you were to write a actual function out of this,"
+    },
+    {
+      "start": 72.64,
+      "end": 75.2,
+      "text": "we'll just use Python because it's basically pseudocode."
+    },
+    {
+      "start": 75.2,
+      "end": 80.0,
+      "text": "We'd have to find F at some value of n here while you'd have your base cases."
+    },
+    {
+      "start": 80.0,
+      "end": 85.52,
+      "text": "So if n is equal to 0, then the base case just says we would return the value of 0."
+    },
+    {
+      "start": 85.52,
+      "end": 90.08,
+      "text": "So otherwise, if n is equal to 1, well, that's your other base case."
+    },
+    {
+      "start": 90.08,
+      "end": 92.8,
+      "text": "So in that case, you would want to just return 1."
+    },
+    {
+      "start": 92.8,
+      "end": 97.36,
+      "text": "But more generally, if it's not one of the two base cases, if it's not one of these two,"
+    },
+    {
+      "start": 97.36,
+      "end": 102.32,
+      "text": "then it's actually recursive, which means you'd have to call the function that you're using,"
+    },
+    {
+      "start": 102.32,
+      "end": 105.12,
+      "text": "the function F within this function itself."
+    },
+    {
+      "start": 105.12,
+      "end": 112.0,
+      "text": "So basically, otherwise, we'd have to return the value of F at n minus 1 plus F at n minus 2."
+    },
+    {
+      "start": 112.0,
+      "end": 114.4,
+      "text": "OK, this is the recursive part right here."
+    },
+    {
+      "start": 114.4,
+      "end": 119.36,
+      "text": "From within this function called F, you were actually calling that same function F."
+    },
+    {
+      "start": 119.36,
+      "end": 121.6,
+      "text": "That is what it means to be a recursive function."
+    },
+    {
+      "start": 121.6,
+      "end": 122.72,
+      "text": "You're calling yourself."
+    },
+    {
+      "start": 122.72,
+      "end": 124.48,
+      "text": "OK, so let's see an example of this."
+    },
+    {
+      "start": 124.48,
+      "end": 127.52,
+      "text": "So basically, if you called something like F at 5,"
+    },
+    {
+      "start": 127.52,
+      "end": 129.6,
+      "text": "if you wanted to know what F at 5 is,"
+    },
+    {
+      "start": 129.6,
+      "end": 131.52,
+      "text": "well, it's going to set 5 over here."
+    },
+    {
+      "start": 131.52,
+      "end": 133.76,
+      "text": "OK, well, it's not 0, it's not 1."
+    },
+    {
+      "start": 133.76,
+      "end": 138.48,
+      "text": "And so we would actually return the result of F at n minus 1 plus F at n minus 2."
+    },
+    {
+      "start": 138.48,
+      "end": 142.72,
+      "text": "So what it would need is F at n minus 1, which is going to be F at 4."
+    },
+    {
+      "start": 142.72,
+      "end": 145.2,
+      "text": "And it's also going to need F at 3."
+    },
+    {
+      "start": 145.2,
+      "end": 147.04,
+      "text": "So that's F at 5 minus 2."
+    },
+    {
+      "start": 147.04,
+      "end": 151.44,
+      "text": "And so the result of this is actually going to be the addition of these two calls."
+    },
+    {
+      "start": 151.44,
+      "end": 152.8,
+      "text": "OK, but this is recursive."
+    },
+    {
+      "start": 152.8,
+      "end": 157.36,
+      "text": "And so F at 4 here, well, that itself is going to actually need F at 3."
+    },
+    {
+      "start": 157.36,
+      "end": 159.76,
+      "text": "And it's also going to need F at 2."
+    },
+    {
+      "start": 159.76,
+      "end": 161.2,
+      "text": "And this is still recursive here."
+    },
+    {
+      "start": 161.2,
+      "end": 162.56,
+      "text": "So let me just move it up a bit."
+    },
+    {
+      "start": 162.56,
+      "end": 165.2,
+      "text": "F at 3 is going to need F at 2."
+    },
+    {
+      "start": 165.2,
+      "end": 167.6,
+      "text": "And it's also going to need F at 1."
+    },
+    {
+      "start": 167.68,
+      "end": 170.4,
+      "text": "And F at 2, well, that would need F at 1."
+    },
+    {
+      "start": 170.4,
+      "end": 172.4,
+      "text": "And it would need F at 0."
+    },
+    {
+      "start": 172.4,
+      "end": 176.0,
+      "text": "F at 2 is going to need F at 1 and F at 0."
+    },
+    {
+      "start": 176.0,
+      "end": 180.4,
+      "text": "And let's just copy and paste this stuff here because F of 3 over here,"
+    },
+    {
+      "start": 180.4,
+      "end": 182.48,
+      "text": "well, it's going to need the same stuff over here."
+    },
+    {
+      "start": 182.48,
+      "end": 186.16,
+      "text": "So F at 3 over here also needs all of that information."
+    },
+    {
+      "start": 186.16,
+      "end": 188.16,
+      "text": "And so to work out this information here,"
+    },
+    {
+      "start": 188.16,
+      "end": 191.84,
+      "text": "well, at the bottom, we know that these base cases are actually numbers."
+    },
+    {
+      "start": 191.84,
+      "end": 194.72,
+      "text": "And so these are basically leaves in this tree here."
+    },
+    {
+      "start": 194.72,
+      "end": 196.56,
+      "text": "It's kind of like a recursive tree."
+    },
+    {
+      "start": 196.64,
+      "end": 198.16,
+      "text": "And so the leaves are numbers."
+    },
+    {
+      "start": 198.16,
+      "end": 199.92,
+      "text": "F at 0, that is a number."
+    },
+    {
+      "start": 199.92,
+      "end": 201.12,
+      "text": "And so that is 0."
+    },
+    {
+      "start": 201.12,
+      "end": 203.6,
+      "text": "F at 1, that is a number, which is 1."
+    },
+    {
+      "start": 203.6,
+      "end": 206.32,
+      "text": "And now we know that F at 2 is 1 plus 0."
+    },
+    {
+      "start": 206.32,
+      "end": 209.36,
+      "text": "And so we can replace F at 2 with its value of 1."
+    },
+    {
+      "start": 209.36,
+      "end": 212.8,
+      "text": "F at 1, again, these are all going to be replaced by ones."
+    },
+    {
+      "start": 212.8,
+      "end": 213.68,
+      "text": "Those are ones."
+    },
+    {
+      "start": 213.68,
+      "end": 216.16,
+      "text": "This one is also a 1 and so is that."
+    },
+    {
+      "start": 216.16,
+      "end": 218.32,
+      "text": "Okay, these ones are going to be zeros."
+    },
+    {
+      "start": 218.32,
+      "end": 221.44,
+      "text": "And you can see we're basically doing duplicate information here."
+    },
+    {
+      "start": 221.44,
+      "end": 224.4,
+      "text": "We already learned earlier that F at 2 was 1."
+    },
+    {
+      "start": 224.56,
+      "end": 228.24,
+      "text": "But we're going to replace it again over here with this is going to be 1."
+    },
+    {
+      "start": 228.24,
+      "end": 229.84,
+      "text": "And this is going to be 1."
+    },
+    {
+      "start": 229.84,
+      "end": 232.32,
+      "text": "So the F at 3's, they are all going to be 2's."
+    },
+    {
+      "start": 232.32,
+      "end": 233.92,
+      "text": "So this is going to be a 2."
+    },
+    {
+      "start": 233.92,
+      "end": 236.32,
+      "text": "And this is also going to be a 2."
+    },
+    {
+      "start": 236.32,
+      "end": 238.72,
+      "text": "Now the F at 4 will be replaced by 3."
+    },
+    {
+      "start": 238.72,
+      "end": 239.76,
+      "text": "So this is 3."
+    },
+    {
+      "start": 239.76,
+      "end": 241.6,
+      "text": "And finally, we know that F at 5,"
+    },
+    {
+      "start": 241.6,
+      "end": 244.0,
+      "text": "that is going to be a value of 5."
+    },
+    {
+      "start": 244.0,
+      "end": 245.52,
+      "text": "And you can actually see that over here,"
+    },
+    {
+      "start": 245.52,
+      "end": 247.2,
+      "text": "we already computed that earlier."
+    },
+    {
+      "start": 247.2,
+      "end": 248.8,
+      "text": "Now, when a function is recursive,"
+    },
+    {
+      "start": 248.8,
+      "end": 251.92,
+      "text": "you'll often hear this term called a call stack."
+    },
+    {
+      "start": 252.0,
+      "end": 255.28,
+      "text": "So it is a stack because it literally is a stack data structure."
+    },
+    {
+      "start": 255.28,
+      "end": 257.92,
+      "text": "This is why recursion comes after the stack sections"
+    },
+    {
+      "start": 257.92,
+      "end": 260.24,
+      "text": "because it uses a recursive call stack."
+    },
+    {
+      "start": 260.24,
+      "end": 263.84,
+      "text": "And by call, we mean that's basically short for function call stack."
+    },
+    {
+      "start": 263.84,
+      "end": 265.44,
+      "text": "So this is our function."
+    },
+    {
+      "start": 265.44,
+      "end": 267.68,
+      "text": "And we can see we're calling it many times here."
+    },
+    {
+      "start": 267.68,
+      "end": 269.28,
+      "text": "These are calls of the function."
+    },
+    {
+      "start": 269.28,
+      "end": 272.56,
+      "text": "And so when you're calling the function within the function itself,"
+    },
+    {
+      "start": 272.56,
+      "end": 274.56,
+      "text": "it is recursive and it's going to generate,"
+    },
+    {
+      "start": 274.56,
+      "end": 276.64,
+      "text": "we'll be called a function call stack."
+    },
+    {
+      "start": 276.64,
+      "end": 278.96,
+      "text": "Or sometimes called a recursive call stack."
+    },
+    {
+      "start": 278.96,
+      "end": 281.36,
+      "text": "So let's say we wanted to compute F at 4 here."
+    },
+    {
+      "start": 281.44,
+      "end": 283.2,
+      "text": "Well, I'm actually going to put that on the bottom"
+    },
+    {
+      "start": 283.2,
+      "end": 284.72,
+      "text": "because it's a call stack."
+    },
+    {
+      "start": 284.72,
+      "end": 286.56,
+      "text": "We could think about it as building up."
+    },
+    {
+      "start": 286.56,
+      "end": 288.48,
+      "text": "So what the call stack would be for this,"
+    },
+    {
+      "start": 288.48,
+      "end": 289.92,
+      "text": "it's going to look like this."
+    },
+    {
+      "start": 289.92,
+      "end": 292.16,
+      "text": "So the call of F at 4,"
+    },
+    {
+      "start": 292.16,
+      "end": 294.0,
+      "text": "that's again why it's called call stack,"
+    },
+    {
+      "start": 294.0,
+      "end": 296.96,
+      "text": "because for this function call of F at 4,"
+    },
+    {
+      "start": 296.96,
+      "end": 298.56,
+      "text": "let's store certain information."
+    },
+    {
+      "start": 298.56,
+      "end": 300.96,
+      "text": "It basically says there's this local variable N,"
+    },
+    {
+      "start": 300.96,
+      "end": 302.16,
+      "text": "which is equal to 4,"
+    },
+    {
+      "start": 302.16,
+      "end": 304.16,
+      "text": "because throughout this call of the function,"
+    },
+    {
+      "start": 304.16,
+      "end": 305.6,
+      "text": "N has a value of 4."
+    },
+    {
+      "start": 305.6,
+      "end": 308.0,
+      "text": "And function calls also have memory addresses."
+    },
+    {
+      "start": 308.0,
+      "end": 310.88,
+      "text": "They basically have what we'd call a return address."
+    },
+    {
+      "start": 311.04,
+      "end": 312.72,
+      "text": "It's just going to be like some hex code."
+    },
+    {
+      "start": 312.72,
+      "end": 315.28,
+      "text": "So 0x and then a bunch of information here."
+    },
+    {
+      "start": 315.28,
+      "end": 317.36,
+      "text": "We'll just call it 0x123."
+    },
+    {
+      "start": 317.36,
+      "end": 318.4,
+      "text": "And so for simplicity,"
+    },
+    {
+      "start": 318.4,
+      "end": 321.28,
+      "text": "let me just kind of think about this as address A here."
+    },
+    {
+      "start": 321.28,
+      "end": 322.56,
+      "text": "So what F at 4 does,"
+    },
+    {
+      "start": 322.56,
+      "end": 324.72,
+      "text": "well, it says, okay, N is equal to 4"
+    },
+    {
+      "start": 324.72,
+      "end": 326.0,
+      "text": "throughout this function call."
+    },
+    {
+      "start": 326.0,
+      "end": 328.0,
+      "text": "And so the first thing it needs to know"
+    },
+    {
+      "start": 328.0,
+      "end": 329.2,
+      "text": "is the value of this,"
+    },
+    {
+      "start": 329.2,
+      "end": 331.52,
+      "text": "which is going to be F at N minus 1,"
+    },
+    {
+      "start": 331.52,
+      "end": 332.8,
+      "text": "which will be F at 3."
+    },
+    {
+      "start": 332.8,
+      "end": 335.04,
+      "text": "So it immediately calls this function here."
+    },
+    {
+      "start": 335.04,
+      "end": 336.96,
+      "text": "And that's why it generates the call stack."
+    },
+    {
+      "start": 336.96,
+      "end": 339.76,
+      "text": "So F at 4, it first needs to know the information"
+    },
+    {
+      "start": 339.76,
+      "end": 341.04,
+      "text": "for F at 3."
+    },
+    {
+      "start": 341.04,
+      "end": 343.2,
+      "text": "And so now we're in a new call of the function here."
+    },
+    {
+      "start": 343.2,
+      "end": 345.52,
+      "text": "Throughout this call, it is N equal to 3."
+    },
+    {
+      "start": 345.52,
+      "end": 347.68,
+      "text": "And so here, it stores information,"
+    },
+    {
+      "start": 347.68,
+      "end": 349.12,
+      "text": "here N is equal to 3."
+    },
+    {
+      "start": 349.12,
+      "end": 351.28,
+      "text": "And it also has an address to return 2."
+    },
+    {
+      "start": 351.28,
+      "end": 353.84,
+      "text": "I'll just write address B, for example here."
+    },
+    {
+      "start": 353.84,
+      "end": 354.96,
+      "text": "It's some hex code."
+    },
+    {
+      "start": 354.96,
+      "end": 356.24,
+      "text": "Okay, so F at 3,"
+    },
+    {
+      "start": 356.24,
+      "end": 359.52,
+      "text": "well, it would need to know F at 2 plus F at 1."
+    },
+    {
+      "start": 359.52,
+      "end": 360.8,
+      "text": "And so the first thing it does"
+    },
+    {
+      "start": 360.8,
+      "end": 363.36,
+      "text": "is it's going to go over into F at 2."
+    },
+    {
+      "start": 363.36,
+      "end": 364.64,
+      "text": "So we'd build this up again."
+    },
+    {
+      "start": 364.64,
+      "end": 365.68,
+      "text": "So we'd say, okay,"
+    },
+    {
+      "start": 365.68,
+      "end": 368.08,
+      "text": "well, we'd have a spot for F at 2."
+    },
+    {
+      "start": 368.16,
+      "end": 370.56,
+      "text": "And so throughout here, N is equal to 2."
+    },
+    {
+      "start": 370.56,
+      "end": 372.0,
+      "text": "And we'd store our return address."
+    },
+    {
+      "start": 372.0,
+      "end": 374.64,
+      "text": "So we'll just call that address C, for example."
+    },
+    {
+      "start": 374.64,
+      "end": 375.68,
+      "text": "Okay, so over here,"
+    },
+    {
+      "start": 375.68,
+      "end": 378.08,
+      "text": "we'd be concerned with N is equal to 2."
+    },
+    {
+      "start": 378.08,
+      "end": 381.52,
+      "text": "And so F at 2 would need F at 1 plus F at 0."
+    },
+    {
+      "start": 381.52,
+      "end": 383.68,
+      "text": "So the first thing it needs is F at 1."
+    },
+    {
+      "start": 383.68,
+      "end": 385.12,
+      "text": "So it's going to go over here."
+    },
+    {
+      "start": 385.12,
+      "end": 387.44,
+      "text": "And so we have F at 1 over here."
+    },
+    {
+      "start": 387.44,
+      "end": 389.52,
+      "text": "Okay, so F at 1 is very interesting"
+    },
+    {
+      "start": 389.52,
+      "end": 391.84,
+      "text": "because we store here that N is equal to 1."
+    },
+    {
+      "start": 391.84,
+      "end": 395.04,
+      "text": "And we'd have a return address, address of D."
+    },
+    {
+      "start": 395.04,
+      "end": 397.04,
+      "text": "And what's interesting about F at 1 here"
+    },
+    {
+      "start": 397.12,
+      "end": 400.16,
+      "text": "is that it is not going to kind of build up the stack here."
+    },
+    {
+      "start": 400.16,
+      "end": 402.24,
+      "text": "It is at what we call a base case."
+    },
+    {
+      "start": 402.24,
+      "end": 403.6,
+      "text": "And recursive functions,"
+    },
+    {
+      "start": 403.6,
+      "end": 405.84,
+      "text": "they need some sort of base cases here."
+    },
+    {
+      "start": 405.84,
+      "end": 407.2,
+      "text": "Because if you didn't have them,"
+    },
+    {
+      "start": 407.2,
+      "end": 408.88,
+      "text": "they'd basically just call forever."
+    },
+    {
+      "start": 408.88,
+      "end": 411.04,
+      "text": "They would just infinitely call the function"
+    },
+    {
+      "start": 411.04,
+      "end": 412.32,
+      "text": "and you would never return."
+    },
+    {
+      "start": 412.32,
+      "end": 415.36,
+      "text": "So here we've hit a base case, which is F at 1."
+    },
+    {
+      "start": 415.36,
+      "end": 417.36,
+      "text": "And so here at this function call level,"
+    },
+    {
+      "start": 417.36,
+      "end": 418.96,
+      "text": "we just return 1."
+    },
+    {
+      "start": 418.96,
+      "end": 420.88,
+      "text": "Return what does that really mean?"
+    },
+    {
+      "start": 420.88,
+      "end": 423.6,
+      "text": "Okay, we return 2 where we came from."
+    },
+    {
+      "start": 423.6,
+      "end": 425.36,
+      "text": "We'll be came from F at 2."
+    },
+    {
+      "start": 425.44,
+      "end": 427.68,
+      "text": "So we're basically telling, hey, F at 2,"
+    },
+    {
+      "start": 427.68,
+      "end": 430.0,
+      "text": "you called me, you called F at 1."
+    },
+    {
+      "start": 430.0,
+      "end": 432.72,
+      "text": "Well, my value, I'm going to return that to you,"
+    },
+    {
+      "start": 432.72,
+      "end": 434.24,
+      "text": "is the value of 1."
+    },
+    {
+      "start": 434.24,
+      "end": 436.8,
+      "text": "So basically, we would go back to F at 2 here."
+    },
+    {
+      "start": 436.8,
+      "end": 438.4,
+      "text": "And it would kind of remember here,"
+    },
+    {
+      "start": 438.4,
+      "end": 440.72,
+      "text": "it would say, okay, we called this guy here."
+    },
+    {
+      "start": 440.72,
+      "end": 442.48,
+      "text": "We called F at 1."
+    },
+    {
+      "start": 442.48,
+      "end": 444.56,
+      "text": "And so his value is actually equal to 1."
+    },
+    {
+      "start": 444.56,
+      "end": 446.96,
+      "text": "And so we'd also need to call F at N minus 2."
+    },
+    {
+      "start": 446.96,
+      "end": 449.68,
+      "text": "So he would want to know what the value of F at 0 is."
+    },
+    {
+      "start": 449.68,
+      "end": 451.28,
+      "text": "Currently, it's just a question mark."
+    },
+    {
+      "start": 451.28,
+      "end": 453.12,
+      "text": "So we would go and get F at 0."
+    },
+    {
+      "start": 453.12,
+      "end": 454.88,
+      "text": "And so F at 0."
+    },
+    {
+      "start": 454.96,
+      "end": 457.44,
+      "text": "In this context, we have N is equal to 0."
+    },
+    {
+      "start": 457.44,
+      "end": 458.96,
+      "text": "And again, you would have some address,"
+    },
+    {
+      "start": 458.96,
+      "end": 460.32,
+      "text": "but I'm going to stop writing it."
+    },
+    {
+      "start": 460.32,
+      "end": 462.32,
+      "text": "It's going to be some address, we'll call it E."
+    },
+    {
+      "start": 462.32,
+      "end": 464.56,
+      "text": "And so again, F at 0 is a base case."
+    },
+    {
+      "start": 464.56,
+      "end": 466.88,
+      "text": "So he's not going to build this up any further."
+    },
+    {
+      "start": 466.88,
+      "end": 470.96,
+      "text": "And so he's going to return to F at 2 via this memory address here."
+    },
+    {
+      "start": 470.96,
+      "end": 472.8,
+      "text": "So that's why we need the memory address,"
+    },
+    {
+      "start": 472.8,
+      "end": 475.6,
+      "text": "because F at 0, we need to know where to return to."
+    },
+    {
+      "start": 475.6,
+      "end": 477.2,
+      "text": "We return to where we called it,"
+    },
+    {
+      "start": 477.2,
+      "end": 480.8,
+      "text": "which in this case is address C associated with F at 2."
+    },
+    {
+      "start": 480.8,
+      "end": 484.64,
+      "text": "So we return our value of 0 over to this memory address"
+    },
+    {
+      "start": 484.64,
+      "end": 488.64,
+      "text": "or basically telling F at 2 here that its value of F at 0,"
+    },
+    {
+      "start": 488.64,
+      "end": 490.88,
+      "text": "that function call has a value of 0."
+    },
+    {
+      "start": 490.88,
+      "end": 494.64,
+      "text": "OK, it now knows that F at 1 is 1 and F at 0 is 0."
+    },
+    {
+      "start": 494.64,
+      "end": 497.28,
+      "text": "So it knows the value of both of these two calls."
+    },
+    {
+      "start": 497.28,
+      "end": 500.32,
+      "text": "And so now, F at 2 is able to return the value,"
+    },
+    {
+      "start": 500.32,
+      "end": 502.56,
+      "text": "which is F at 1 plus F at 0."
+    },
+    {
+      "start": 502.56,
+      "end": 506.48,
+      "text": "And its value is going to be 1, which is the sum of those two things."
+    },
+    {
+      "start": 506.48,
+      "end": 508.16,
+      "text": "OK, so F at 2 is 1."
+    },
+    {
+      "start": 508.16,
+      "end": 510.72,
+      "text": "It's going to return to the thing that called it,"
+    },
+    {
+      "start": 510.72,
+      "end": 512.64,
+      "text": "which is going to be F at 3,"
+    },
+    {
+      "start": 512.64,
+      "end": 515.04,
+      "text": "which is located at memory address B."
+    },
+    {
+      "start": 515.04,
+      "end": 517.6,
+      "text": "So it basically says, OK, hey, F at 3 here,"
+    },
+    {
+      "start": 517.6,
+      "end": 521.52,
+      "text": "well, your value of F at 2, that is going to be a result of 1."
+    },
+    {
+      "start": 521.52,
+      "end": 525.04,
+      "text": "But then F at 3 also needs to know the value of F at 1."
+    },
+    {
+      "start": 525.04,
+      "end": 527.76,
+      "text": "And so it's going to then put that on the call stack."
+    },
+    {
+      "start": 527.76,
+      "end": 530.56,
+      "text": "So F at 1, I'm going to do this a little bit faster."
+    },
+    {
+      "start": 530.56,
+      "end": 534.32,
+      "text": "And so it would basically return here that its value is a base case,"
+    },
+    {
+      "start": 534.32,
+      "end": 536.96,
+      "text": "which is just going to be the value of 1."
+    },
+    {
+      "start": 536.96,
+      "end": 538.96,
+      "text": "So that's how we know that F at 3 is 2."
+    },
+    {
+      "start": 538.96,
+      "end": 541.52,
+      "text": "We return this information back to where we called it."
+    },
+    {
+      "start": 541.52,
+      "end": 545.68,
+      "text": "So F at 4 knows that its value of F at 3 is a value of 2."
+    },
+    {
+      "start": 545.68,
+      "end": 548.96,
+      "text": "But F at 4 also needs to know the value of F at 2."
+    },
+    {
+      "start": 548.96,
+      "end": 551.68,
+      "text": "And so we kind of build this call stack back up here."
+    },
+    {
+      "start": 551.68,
+      "end": 554.32,
+      "text": "F at 2, F at 2 is not a base case."
+    },
+    {
+      "start": 554.32,
+      "end": 557.04,
+      "text": "And so it needs to know the value of F at 1,"
+    },
+    {
+      "start": 557.04,
+      "end": 559.44,
+      "text": "which is currently a question mark, F at 0,"
+    },
+    {
+      "start": 559.44,
+      "end": 561.12,
+      "text": "which is currently a question mark."
+    },
+    {
+      "start": 561.12,
+      "end": 563.28,
+      "text": "And so we could draw that for F at 1 here,"
+    },
+    {
+      "start": 563.28,
+      "end": 565.44,
+      "text": "that's going to quickly kind of return here"
+    },
+    {
+      "start": 565.44,
+      "end": 567.84,
+      "text": "and say that the value of F at 1,"
+    },
+    {
+      "start": 567.84,
+      "end": 569.2,
+      "text": "that is a base case of 1,"
+    },
+    {
+      "start": 569.2,
+      "end": 572.4,
+      "text": "F at 0, that would tell us that has a value of 0."
+    },
+    {
+      "start": 572.4,
+      "end": 574.72,
+      "text": "And again, F at 2 would basically return"
+    },
+    {
+      "start": 574.72,
+      "end": 577.92,
+      "text": "the sum of these two values over 2, this call here."
+    },
+    {
+      "start": 577.92,
+      "end": 580.08,
+      "text": "And so it would tell it that F at 2,"
+    },
+    {
+      "start": 580.08,
+      "end": 582.24,
+      "text": "this value is going to be just 1."
+    },
+    {
+      "start": 582.24,
+      "end": 585.76,
+      "text": "So now, F at 4 actually has the total value here"
+    },
+    {
+      "start": 585.76,
+      "end": 589.76,
+      "text": "of F at 3 plus F at 2, which is going to just be 3."
+    },
+    {
+      "start": 589.76,
+      "end": 591.92,
+      "text": "So F at 4 has a value of 3."
+    },
+    {
+      "start": 591.92,
+      "end": 593.92,
+      "text": "Okay, so that's the recursive call stack"
+    },
+    {
+      "start": 593.92,
+      "end": 596.16,
+      "text": "and the fundamental idea of recursion."
+    },
+    {
+      "start": 596.16,
+      "end": 598.48,
+      "text": "So just to really illustrate what would happen here,"
+    },
+    {
+      "start": 598.56,
+      "end": 600.72,
+      "text": "if you called something like F at 4,"
+    },
+    {
+      "start": 600.72,
+      "end": 603.04,
+      "text": "well, it's firstly going to do this"
+    },
+    {
+      "start": 603.04,
+      "end": 605.2,
+      "text": "before it even thinks about this idea."
+    },
+    {
+      "start": 605.2,
+      "end": 608.0,
+      "text": "So the placement of this actually has a huge effect"
+    },
+    {
+      "start": 608.0,
+      "end": 610.16,
+      "text": "on the way that the computer is going to run this."
+    },
+    {
+      "start": 610.16,
+      "end": 612.8,
+      "text": "It first is going to see F at n minus 1"
+    },
+    {
+      "start": 612.8,
+      "end": 615.04,
+      "text": "before worrying about F at n minus 2."
+    },
+    {
+      "start": 615.04,
+      "end": 618.88,
+      "text": "So F at 4 is actually first going to think about F at 3"
+    },
+    {
+      "start": 618.88,
+      "end": 620.48,
+      "text": "and then it's a recursive call."
+    },
+    {
+      "start": 620.48,
+      "end": 622.64,
+      "text": "So F at 3 thinks about it the same way."
+    },
+    {
+      "start": 622.64,
+      "end": 624.96,
+      "text": "This guy needs to know what F at 2 is first."
+    },
+    {
+      "start": 624.96,
+      "end": 626.88,
+      "text": "So he goes and gets F at 2"
+    },
+    {
+      "start": 626.96,
+      "end": 629.6,
+      "text": "and F at 2 is going to first think about F at 1."
+    },
+    {
+      "start": 629.6,
+      "end": 632.96,
+      "text": "Now we hit a base case and so F at 2 can kind of remember"
+    },
+    {
+      "start": 632.96,
+      "end": 634.96,
+      "text": "that F at 1 has a value of 1."
+    },
+    {
+      "start": 634.96,
+      "end": 638.48,
+      "text": "Okay, F at 2 also is going to need F at 0,"
+    },
+    {
+      "start": 638.48,
+      "end": 641.68,
+      "text": "which we'd return back and say that's a value of 0."
+    },
+    {
+      "start": 641.68,
+      "end": 644.56,
+      "text": "F at 2 would then basically return to F at 3"
+    },
+    {
+      "start": 644.56,
+      "end": 646.48,
+      "text": "that it has a value of 1."
+    },
+    {
+      "start": 646.48,
+      "end": 648.8,
+      "text": "Now F at 3 can think about F at 1"
+    },
+    {
+      "start": 648.8,
+      "end": 652.4,
+      "text": "and so F at 1 is going to be a base case of just 1."
+    },
+    {
+      "start": 652.4,
+      "end": 656.0,
+      "text": "Okay, F at 3 is now going to return to F at 4"
+    },
+    {
+      "start": 656.08,
+      "end": 657.68,
+      "text": "that it has a value of 2."
+    },
+    {
+      "start": 657.68,
+      "end": 659.84,
+      "text": "And then F at 4 would go through this stuff."
+    },
+    {
+      "start": 659.84,
+      "end": 661.6,
+      "text": "So it also go through F at 2,"
+    },
+    {
+      "start": 661.6,
+      "end": 664.0,
+      "text": "which again is going to go through F at 1."
+    },
+    {
+      "start": 664.0,
+      "end": 665.04,
+      "text": "That's going to be 1."
+    },
+    {
+      "start": 665.04,
+      "end": 667.12,
+      "text": "F at 2 would then need F at 0,"
+    },
+    {
+      "start": 667.12,
+      "end": 668.4,
+      "text": "which is going to be 0."
+    },
+    {
+      "start": 668.4,
+      "end": 671.84,
+      "text": "It would then say to F at 4 that it has a value of 1."
+    },
+    {
+      "start": 671.84,
+      "end": 674.32,
+      "text": "And then ultimately we'd have that F at 4"
+    },
+    {
+      "start": 674.32,
+      "end": 676.48,
+      "text": "is actually going to be a result of 3."
+    },
+    {
+      "start": 676.48,
+      "end": 679.12,
+      "text": "So what happens is you can see there's one thing at this level."
+    },
+    {
+      "start": 679.12,
+      "end": 681.68,
+      "text": "There's two things at this level for this level."
+    },
+    {
+      "start": 681.68,
+      "end": 683.68,
+      "text": "And if we picked a higher value here,"
+    },
+    {
+      "start": 683.68,
+      "end": 686.24,
+      "text": "this actually would have had at most 8 things here"
+    },
+    {
+      "start": 686.24,
+      "end": 688.96,
+      "text": "and then 16 and you basically get a doubling effect."
+    },
+    {
+      "start": 688.96,
+      "end": 690.48,
+      "text": "So what's basically happening here"
+    },
+    {
+      "start": 690.48,
+      "end": 692.88,
+      "text": "is that there is 2 to the 0 things at this level,"
+    },
+    {
+      "start": 692.88,
+      "end": 695.12,
+      "text": "2 to the 1 here, 2 to the 2 here,"
+    },
+    {
+      "start": 695.12,
+      "end": 696.72,
+      "text": "and 2 to the 3 here and so on."
+    },
+    {
+      "start": 696.72,
+      "end": 699.2,
+      "text": "So you're getting a doubling effect starting at n"
+    },
+    {
+      "start": 699.2,
+      "end": 702.32,
+      "text": "and that's going to work itself all the way down to 0."
+    },
+    {
+      "start": 702.32,
+      "end": 705.52,
+      "text": "So there's approximately n things or n plus 1 things there."
+    },
+    {
+      "start": 705.52,
+      "end": 706.96,
+      "text": "So basically in the bottom level,"
+    },
+    {
+      "start": 706.96,
+      "end": 709.28,
+      "text": "you're going to have roughly 2 to the n things."
+    },
+    {
+      "start": 709.28,
+      "end": 711.52,
+      "text": "So you could think about this as a time complexity"
+    },
+    {
+      "start": 711.6,
+      "end": 714.72,
+      "text": "of big 0 of 2 to the n due to the doubling effect."
+    },
+    {
+      "start": 714.72,
+      "end": 717.76,
+      "text": "So the doubling effect happens because at any F at n,"
+    },
+    {
+      "start": 717.76,
+      "end": 720.96,
+      "text": "you basically need to sprout off into two different pieces here."
+    },
+    {
+      "start": 720.96,
+      "end": 723.12,
+      "text": "So your 2 is coming up because you basically"
+    },
+    {
+      "start": 723.12,
+      "end": 724.64,
+      "text": "have two different options here."
+    },
+    {
+      "start": 724.64,
+      "end": 727.68,
+      "text": "And the n is happening because you're basically starting at n"
+    },
+    {
+      "start": 727.68,
+      "end": 730.48,
+      "text": "and working yourself all the way down to the base cases."
+    },
+    {
+      "start": 730.48,
+      "end": 733.84,
+      "text": "Okay, so this would have a time complexity of big 0 of 2 to the n"
+    },
+    {
+      "start": 733.84,
+      "end": 736.88,
+      "text": "and this base complexity is extremely interesting here"
+    },
+    {
+      "start": 736.88,
+      "end": 738.32,
+      "text": "and a very important lesson."
+    },
+    {
+      "start": 738.32,
+      "end": 740.72,
+      "text": "Well, remember we drew that recursive call stack?"
+    },
+    {
+      "start": 740.8,
+      "end": 743.04,
+      "text": "I'm not going to draw it again because it's a little annoying."
+    },
+    {
+      "start": 743.04,
+      "end": 746.16,
+      "text": "But basically you would have F at 5 stores information"
+    },
+    {
+      "start": 746.16,
+      "end": 748.64,
+      "text": "like the value of n and the return address."
+    },
+    {
+      "start": 748.64,
+      "end": 750.08,
+      "text": "So that stores information."
+    },
+    {
+      "start": 750.08,
+      "end": 752.4,
+      "text": "So it's F at 4, 3, 2, 1"
+    },
+    {
+      "start": 752.4,
+      "end": 754.08,
+      "text": "and it goes all the way down here."
+    },
+    {
+      "start": 754.08,
+      "end": 757.04,
+      "text": "So basically you are storing in the call stack"
+    },
+    {
+      "start": 757.04,
+      "end": 759.36,
+      "text": "all of this information at the same time."
+    },
+    {
+      "start": 759.36,
+      "end": 762.16,
+      "text": "So if you're storing some variables and a return address"
+    },
+    {
+      "start": 762.16,
+      "end": 764.16,
+      "text": "for each of those things in the call stack,"
+    },
+    {
+      "start": 764.16,
+      "end": 767.12,
+      "text": "basically there is 0 of n many things there."
+    },
+    {
+      "start": 767.12,
+      "end": 769.84,
+      "text": "Because again, you're starting at n which is equal to 5"
+    },
+    {
+      "start": 769.92,
+      "end": 772.4,
+      "text": "and you're working yourself down to the bottom of 1"
+    },
+    {
+      "start": 772.4,
+      "end": 773.6,
+      "text": "or maybe down to 0."
+    },
+    {
+      "start": 773.6,
+      "end": 776.08,
+      "text": "It's the space complexity of big 0 of n"
+    },
+    {
+      "start": 776.08,
+      "end": 779.12,
+      "text": "due to the recursive call stack taking up that space."
+    },
+    {
+      "start": 779.12,
+      "end": 780.88,
+      "text": "So whenever you have a recursive function"
+    },
+    {
+      "start": 780.88,
+      "end": 782.72,
+      "text": "that's kind of drawn out like this,"
+    },
+    {
+      "start": 782.72,
+      "end": 786.32,
+      "text": "it's going to be a space complexity of the height of that recursive tree."
+    },
+    {
+      "start": 786.32,
+      "end": 788.8,
+      "text": "Now you can actually use recursion for many problems"
+    },
+    {
+      "start": 788.8,
+      "end": 792.16,
+      "text": "although some of the most common ones you'll see is for linked lists"
+    },
+    {
+      "start": 792.16,
+      "end": 794.4,
+      "text": "because they are a recursive data structure."
+    },
+    {
+      "start": 794.4,
+      "end": 797.44,
+      "text": "They're basically a node that points to another node"
+    },
+    {
+      "start": 797.44,
+      "end": 799.68,
+      "text": "that itself is basically a recursion"
+    },
+    {
+      "start": 799.76,
+      "end": 801.44,
+      "text": "and eventually it has a base case"
+    },
+    {
+      "start": 801.44,
+      "end": 803.2,
+      "text": "which at the end is that it points to null"
+    },
+    {
+      "start": 803.2,
+      "end": 804.72,
+      "text": "or in Python it would be called none."
+    },
+    {
+      "start": 804.72,
+      "end": 806.24,
+      "text": "So linked lists are recursive"
+    },
+    {
+      "start": 806.24,
+      "end": 808.24,
+      "text": "and so their algorithms might be recursive."
+    },
+    {
+      "start": 808.24,
+      "end": 809.44,
+      "text": "We also have trees."
+    },
+    {
+      "start": 809.44,
+      "end": 811.52,
+      "text": "So trees are recursive data structure"
+    },
+    {
+      "start": 811.52,
+      "end": 813.36,
+      "text": "because they might look something like this."
+    },
+    {
+      "start": 813.36,
+      "end": 816.8,
+      "text": "We basically have nodes that are pointing to other nodes"
+    },
+    {
+      "start": 816.8,
+      "end": 818.8,
+      "text": "and again they would have base cases."
+    },
+    {
+      "start": 818.8,
+      "end": 820.08,
+      "text": "So the leaf nodes here"
+    },
+    {
+      "start": 820.08,
+      "end": 822.32,
+      "text": "they would have left and right children of nothing."
+    },
+    {
+      "start": 822.32,
+      "end": 823.84,
+      "text": "These are going to be pointing to null"
+    },
+    {
+      "start": 823.84,
+      "end": 825.36,
+      "text": "which again are base cases."
+    },
+    {
+      "start": 825.36,
+      "end": 826.88,
+      "text": "So trees are very recursive"
+    },
+    {
+      "start": 826.88,
+      "end": 827.92,
+      "text": "and so are graphs"
+    },
+    {
+      "start": 828.0,
+      "end": 829.76,
+      "text": "and you can actually solve many problems"
+    },
+    {
+      "start": 829.76,
+      "end": 831.44,
+      "text": "just in general using recursion."
+    },
+    {
+      "start": 831.44,
+      "end": 832.64,
+      "text": "It's very versatile."
+    },
+    {
+      "start": 832.64,
+      "end": 834.96,
+      "text": "Okay, so let's do a little fun with recursion here."
+    },
+    {
+      "start": 834.96,
+      "end": 836.48,
+      "text": "So one thing that's recursive"
+    },
+    {
+      "start": 836.48,
+      "end": 837.92,
+      "text": "is definitely a linked list."
+    },
+    {
+      "start": 837.92,
+      "end": 840.0,
+      "text": "It's a recursive data structure in nature."
+    },
+    {
+      "start": 840.0,
+      "end": 844.0,
+      "text": "So we'll have 1 points over to 2 points over to 3 points over to 4"
+    },
+    {
+      "start": 844.0,
+      "end": 846.88,
+      "text": "and we'd be given some head to this linked list called h."
+    },
+    {
+      "start": 846.88,
+      "end": 849.92,
+      "text": "And so what I want to do is print the nodes in reverse order."
+    },
+    {
+      "start": 849.92,
+      "end": 853.76,
+      "text": "So I want to see 4 first and then 3 then 2 then 1."
+    },
+    {
+      "start": 853.76,
+      "end": 856.16,
+      "text": "Now we still have to start at the beginning of the list."
+    },
+    {
+      "start": 856.24,
+      "end": 858.96,
+      "text": "We'd have to start here because that is what we're given."
+    },
+    {
+      "start": 858.96,
+      "end": 861.44,
+      "text": "You could think about this as a recursive call stack"
+    },
+    {
+      "start": 861.44,
+      "end": 864.0,
+      "text": "so you'd start at 1 just don't print it yet"
+    },
+    {
+      "start": 864.0,
+      "end": 866.56,
+      "text": "and then you could call the next node which is going to be 2."
+    },
+    {
+      "start": 866.56,
+      "end": 869.36,
+      "text": "Don't print that just go over to the next node of 3"
+    },
+    {
+      "start": 869.36,
+      "end": 870.72,
+      "text": "and they go over to 4"
+    },
+    {
+      "start": 870.72,
+      "end": 872.56,
+      "text": "and then when we go over to"
+    },
+    {
+      "start": 872.56,
+      "end": 874.88,
+      "text": "well nothing this is basically just null."
+    },
+    {
+      "start": 874.88,
+      "end": 877.04,
+      "text": "That would be our base case here if null"
+    },
+    {
+      "start": 877.04,
+      "end": 879.28,
+      "text": "basically just return back over here"
+    },
+    {
+      "start": 879.28,
+      "end": 880.88,
+      "text": "and so you'd return back here"
+    },
+    {
+      "start": 880.88,
+      "end": 882.8,
+      "text": "and you could now print this value."
+    },
+    {
+      "start": 882.8,
+      "end": 884.72,
+      "text": "So you could print the value of 4"
+    },
+    {
+      "start": 884.8,
+      "end": 886.48,
+      "text": "and then you could return back here"
+    },
+    {
+      "start": 886.48,
+      "end": 888.56,
+      "text": "and then print your value of 3."
+    },
+    {
+      "start": 888.56,
+      "end": 891.84,
+      "text": "So 3 and then we'd print again we'd print 2"
+    },
+    {
+      "start": 891.84,
+      "end": 895.2,
+      "text": "and get to our very beginning of the list we would print 1"
+    },
+    {
+      "start": 895.2,
+      "end": 897.52,
+      "text": "and here you would entirely relieve the call stack"
+    },
+    {
+      "start": 897.52,
+      "end": 898.88,
+      "text": "and so then you would be done."
+    },
+    {
+      "start": 898.88,
+      "end": 901.52,
+      "text": "Okay so let's first talk about the Fibonacci sequence."
+    },
+    {
+      "start": 901.52,
+      "end": 905.28,
+      "text": "So this is defined as f of 0 is equal to 0"
+    },
+    {
+      "start": 905.28,
+      "end": 906.88,
+      "text": "and you might see other base cases"
+    },
+    {
+      "start": 906.88,
+      "end": 908.48,
+      "text": "but that's generally how it's set up."
+    },
+    {
+      "start": 908.48,
+      "end": 910.08,
+      "text": "f of 1 is equal to 1"
+    },
+    {
+      "start": 910.08,
+      "end": 913.52,
+      "text": "and more generally for any n that's bigger than 1"
+    },
+    {
+      "start": 913.6,
+      "end": 918.16,
+      "text": "you would have that f at n is equal to f at n minus 1"
+    },
+    {
+      "start": 918.16,
+      "end": 920.32,
+      "text": "plus f at n minus 2."
+    },
+    {
+      "start": 920.32,
+      "end": 923.36,
+      "text": "So we would make a recursive function called f at n"
+    },
+    {
+      "start": 923.36,
+      "end": 926.48,
+      "text": "and so you'd write your base cases almost always at the top"
+    },
+    {
+      "start": 926.48,
+      "end": 928.48,
+      "text": "so if n is equal to 0"
+    },
+    {
+      "start": 928.48,
+      "end": 930.48,
+      "text": "then you would return the value of 0"
+    },
+    {
+      "start": 930.48,
+      "end": 932.48,
+      "text": "otherwise if n is equal to 1"
+    },
+    {
+      "start": 932.48,
+      "end": 934.32,
+      "text": "then you would return the other base case"
+    },
+    {
+      "start": 934.32,
+      "end": 935.28,
+      "text": "which is 1"
+    },
+    {
+      "start": 935.28,
+      "end": 937.76,
+      "text": "and then otherwise you'd return the recursive part"
+    },
+    {
+      "start": 937.76,
+      "end": 939.92,
+      "text": "which is f at n minus 1"
+    },
+    {
+      "start": 940.0,
+      "end": 941.84,
+      "text": "plus f at n minus 2"
+    },
+    {
+      "start": 941.84,
+      "end": 944.56,
+      "text": "again just the sum of the previous two values."
+    },
+    {
+      "start": 944.56,
+      "end": 946.16,
+      "text": "Okay so you could test this out here"
+    },
+    {
+      "start": 946.16,
+      "end": 947.84,
+      "text": "we could call say f at 5"
+    },
+    {
+      "start": 947.84,
+      "end": 949.04,
+      "text": "that is equal to 5"
+    },
+    {
+      "start": 949.04,
+      "end": 950.56,
+      "text": "one of your base cases maybe"
+    },
+    {
+      "start": 950.56,
+      "end": 952.24,
+      "text": "so f at 0 is 0"
+    },
+    {
+      "start": 952.24,
+      "end": 954.08,
+      "text": "f at 1 is equal to 1"
+    },
+    {
+      "start": 954.08,
+      "end": 956.08,
+      "text": "and if you were to call this with a big value"
+    },
+    {
+      "start": 956.08,
+      "end": 957.68,
+      "text": "of say f at 100"
+    },
+    {
+      "start": 957.68,
+      "end": 960.72,
+      "text": "well you can basically just watch it spin and do nothing"
+    },
+    {
+      "start": 960.72,
+      "end": 962.88,
+      "text": "it is going to just sit here and compute"
+    },
+    {
+      "start": 962.88,
+      "end": 965.68,
+      "text": "and technically it would complete eventually"
+    },
+    {
+      "start": 965.68,
+      "end": 969.36,
+      "text": "but this has a time complexity of big O of 2 to the n"
+    },
+    {
+      "start": 969.44,
+      "end": 972.32,
+      "text": "so that would mean roughly this is trying to do 2 to the 100"
+    },
+    {
+      "start": 972.32,
+      "end": 973.92,
+      "text": "which is a massive number here"
+    },
+    {
+      "start": 973.92,
+      "end": 975.12,
+      "text": "in fact if we stop that"
+    },
+    {
+      "start": 975.12,
+      "end": 976.88,
+      "text": "we could just calculate that 2"
+    },
+    {
+      "start": 976.88,
+      "end": 979.76,
+      "text": "you would do at asterisk asterisk 2 to the 100"
+    },
+    {
+      "start": 979.76,
+      "end": 982.24,
+      "text": "that is equal to this massive number"
+    },
+    {
+      "start": 982.24,
+      "end": 985.36,
+      "text": "it's trying to do approximately that many operations"
+    },
+    {
+      "start": 985.36,
+      "end": 987.92,
+      "text": "that's going to complete eventually in theory"
+    },
+    {
+      "start": 987.92,
+      "end": 989.6,
+      "text": "but it's just going to take way too long"
+    },
+    {
+      "start": 989.6,
+      "end": 992.0,
+      "text": "so this is not going to work for bigger numbers"
+    },
+    {
+      "start": 992.0,
+      "end": 994.32,
+      "text": "we could stick at something like say f at 12"
+    },
+    {
+      "start": 994.32,
+      "end": 995.76,
+      "text": "that's going to be 144"
+    },
+    {
+      "start": 995.76,
+      "end": 998.16,
+      "text": "now again because of the recursive call stack here"
+    },
+    {
+      "start": 998.16,
+      "end": 1001.2,
+      "text": "this is going to have a space complexity of big O of n"
+    },
+    {
+      "start": 1001.2,
+      "end": 1002.88,
+      "text": "basically starting at n"
+    },
+    {
+      "start": 1002.88,
+      "end": 1005.76,
+      "text": "it has to open the call stack and get all the way down"
+    },
+    {
+      "start": 1005.76,
+      "end": 1008.64,
+      "text": "to the base case before I can start relieving information"
+    },
+    {
+      "start": 1008.64,
+      "end": 1011.92,
+      "text": "so this has a time of 2 to the n and a space of 0 of n"
+    },
+    {
+      "start": 1011.92,
+      "end": 1014.4,
+      "text": "so whenever you're given a recursive formula like this"
+    },
+    {
+      "start": 1014.4,
+      "end": 1016.0,
+      "text": "definitely think about recursion"
+    },
+    {
+      "start": 1016.0,
+      "end": 1019.6,
+      "text": "and just in general many problems can be thought of as recursively"
+    },
+    {
+      "start": 1019.6,
+      "end": 1021.68,
+      "text": "definitely linked lists are recursive"
+    },
+    {
+      "start": 1021.68,
+      "end": 1022.88,
+      "text": "and so we'll write our function"
+    },
+    {
+      "start": 1022.88,
+      "end": 1024.88,
+      "text": "that basically just prints and refers"
+    },
+    {
+      "start": 1024.88,
+      "end": 1026.88,
+      "text": "so we'll define this as refers"
+    },
+    {
+      "start": 1026.96,
+      "end": 1028.72,
+      "text": "it takes the head of a linked list"
+    },
+    {
+      "start": 1028.72,
+      "end": 1031.6,
+      "text": "and before we write this we would need a linked list to call the son"
+    },
+    {
+      "start": 1031.6,
+      "end": 1034.4,
+      "text": "so let me just paste our previous linked list from before"
+    },
+    {
+      "start": 1034.4,
+      "end": 1037.44,
+      "text": "so this is our class to actually get a real linked list"
+    },
+    {
+      "start": 1037.44,
+      "end": 1038.8,
+      "text": "you could do something like this"
+    },
+    {
+      "start": 1038.8,
+      "end": 1042.64,
+      "text": "so head of 1 points over to 3 to 4 to 7 to nothing"
+    },
+    {
+      "start": 1042.64,
+      "end": 1045.2,
+      "text": "so if we print the head we'll just see the value of 1"
+    },
+    {
+      "start": 1045.2,
+      "end": 1046.64,
+      "text": "but we have that linked list"
+    },
+    {
+      "start": 1046.64,
+      "end": 1049.04,
+      "text": "and I think it's actually a little better just to call this node"
+    },
+    {
+      "start": 1049.04,
+      "end": 1050.16,
+      "text": "although it doesn't really matter"
+    },
+    {
+      "start": 1050.16,
+      "end": 1053.2,
+      "text": "so our base case would be if we don't have a node"
+    },
+    {
+      "start": 1053.2,
+      "end": 1055.44,
+      "text": "so that would mean if we call this on null"
+    },
+    {
+      "start": 1055.52,
+      "end": 1057.76,
+      "text": "well that would mean we got to the end of the list"
+    },
+    {
+      "start": 1057.76,
+      "end": 1059.76,
+      "text": "and so we are ready just to return"
+    },
+    {
+      "start": 1059.76,
+      "end": 1062.16,
+      "text": "if we don't have a node if our node is null"
+    },
+    {
+      "start": 1062.16,
+      "end": 1064.4,
+      "text": "we don't have anything to print so we just return"
+    },
+    {
+      "start": 1064.4,
+      "end": 1066.56,
+      "text": "okay if we don't get hit by this if statement"
+    },
+    {
+      "start": 1066.56,
+      "end": 1067.68,
+      "text": "then we are a node"
+    },
+    {
+      "start": 1067.68,
+      "end": 1069.6,
+      "text": "and so before printing ourselves"
+    },
+    {
+      "start": 1069.6,
+      "end": 1071.44,
+      "text": "we want to print over the next guy"
+    },
+    {
+      "start": 1071.44,
+      "end": 1072.96,
+      "text": "and so here's the recursion"
+    },
+    {
+      "start": 1072.96,
+      "end": 1076.32,
+      "text": "you would want to first reverse on the node.next"
+    },
+    {
+      "start": 1076.32,
+      "end": 1078.4,
+      "text": "so before processing ourselves"
+    },
+    {
+      "start": 1078.4,
+      "end": 1080.24,
+      "text": "we want to process the next guy"
+    },
+    {
+      "start": 1080.24,
+      "end": 1082.08,
+      "text": "until we hit a base case"
+    },
+    {
+      "start": 1082.08,
+      "end": 1083.52,
+      "text": "and then we can start printing"
+    },
+    {
+      "start": 1083.52,
+      "end": 1085.76,
+      "text": "after we're back from this function call here"
+    },
+    {
+      "start": 1085.76,
+      "end": 1087.44,
+      "text": "we did all the stuff ahead of it"
+    },
+    {
+      "start": 1087.44,
+      "end": 1089.84,
+      "text": "we're back here and we're ready to print ourselves"
+    },
+    {
+      "start": 1089.84,
+      "end": 1091.76,
+      "text": "so we'll just print the current node"
+    },
+    {
+      "start": 1091.76,
+      "end": 1093.04,
+      "text": "and that's really all it is here"
+    },
+    {
+      "start": 1093.04,
+      "end": 1096.32,
+      "text": "so if you call reverse on the head of our linked list"
+    },
+    {
+      "start": 1096.32,
+      "end": 1098.32,
+      "text": "and sorry it's going to be a capital H there"
+    },
+    {
+      "start": 1098.32,
+      "end": 1100.32,
+      "text": "you would get the nodes in reverse order"
+    },
+    {
+      "start": 1100.32,
+      "end": 1102.48,
+      "text": "our list was 1347"
+    },
+    {
+      "start": 1102.48,
+      "end": 1105.36,
+      "text": "but we're printing it in the order of 7431"
+    },
+    {
+      "start": 1105.36,
+      "end": 1107.84,
+      "text": "okay now this would have a time complexity"
+    },
+    {
+      "start": 1107.84,
+      "end": 1111.2,
+      "text": "of big of n where n is the number of nodes in the linked list"
+    },
+    {
+      "start": 1111.2,
+      "end": 1112.72,
+      "text": "we have to go through the list"
+    },
+    {
+      "start": 1112.72,
+      "end": 1114.32,
+      "text": "and then basically return all the way back"
+    },
+    {
+      "start": 1114.32,
+      "end": 1115.76,
+      "text": "and the space complexity"
+    },
+    {
+      "start": 1115.76,
+      "end": 1118.4,
+      "text": "well that actually also has an O of n space"
+    },
+    {
+      "start": 1118.4,
+      "end": 1120.0,
+      "text": "you could actually picture this basically"
+    },
+    {
+      "start": 1120.0,
+      "end": 1122.24,
+      "text": "as the call stack we start at the head"
+    },
+    {
+      "start": 1122.24,
+      "end": 1124.24,
+      "text": "but before printing him we have to go here"
+    },
+    {
+      "start": 1124.24,
+      "end": 1126.0,
+      "text": "then we have to go here then here"
+    },
+    {
+      "start": 1126.0,
+      "end": 1128.0,
+      "text": "and then once we hit our base case of nothing"
+    },
+    {
+      "start": 1128.0,
+      "end": 1129.76,
+      "text": "then we can actually start printing"
+    },
+    {
+      "start": 1129.76,
+      "end": 1132.32,
+      "text": "and so basically this whole call stack is open"
+    },
+    {
+      "start": 1132.32,
+      "end": 1135.44,
+      "text": "and so that is also going to be a space of big of n"
+    },
+    {
+      "start": 1135.44,
+      "end": 1137.2,
+      "text": "because of the recursive call stack"
+    },
+    {
+      "start": 1137.2,
+      "end": 1138.8,
+      "text": "okay so I hope this was helpful guys"
+    },
+    {
+      "start": 1138.8,
+      "end": 1140.56,
+      "text": "drop it like if it was and have a great day"
+    },
+    {
+      "start": 1140.56,
+      "end": 1142.64,
+      "text": "bye bye"
+    }
+  ],
+  "full_text": "Hey guys, Greg here. Let's talk about a popular algorithm known as recursion. Now to illustrate this idea, let's talk about the Fibonacci number problems. So the Fibonacci numbers are a sequence generally starting at 0 and 1. And then the next number is recursively defined as the sum of the previous two values. So the next number would be 0 plus 1, which is 1. This would be 1 plus 1, which is 2, 2 plus 1, which is 3. We'd get 5, 8, 13, and so on. That sequence is actually infinite. That can keep going. So formally you would define this with a function, saying something like F at 0 is equal to 0. That's 1 base case. F at 1 is equal to 1. That's another base case. But more generally, for any end that's bigger than 1, we would have that F at n is equal to the sum of the previous two, which is F at n minus 1 plus F at n minus 2. So this is the formal way of saying your base case, F at 0 is 0. You could think about this basically as an index here. F at 0 is 0 and F at 1 is 1. And then for any end that's bigger than 1 here, so for 2, 3, 4, 5, 6, and so on, you'd have that F at n is equal to F at n minus 1 plus F at n minus 2. And if you were to write a actual function out of this, we'll just use Python because it's basically pseudocode. We'd have to find F at some value of n here while you'd have your base cases. So if n is equal to 0, then the base case just says we would return the value of 0. So otherwise, if n is equal to 1, well, that's your other base case. So in that case, you would want to just return 1. But more generally, if it's not one of the two base cases, if it's not one of these two, then it's actually recursive, which means you'd have to call the function that you're using, the function F within this function itself. So basically, otherwise, we'd have to return the value of F at n minus 1 plus F at n minus 2. OK, this is the recursive part right here. From within this function called F, you were actually calling that same function F. That is what it means to be a recursive function. You're calling yourself. OK, so let's see an example of this. So basically, if you called something like F at 5, if you wanted to know what F at 5 is, well, it's going to set 5 over here. OK, well, it's not 0, it's not 1. And so we would actually return the result of F at n minus 1 plus F at n minus 2. So what it would need is F at n minus 1, which is going to be F at 4. And it's also going to need F at 3. So that's F at 5 minus 2. And so the result of this is actually going to be the addition of these two calls. OK, but this is recursive. And so F at 4 here, well, that itself is going to actually need F at 3. And it's also going to need F at 2. And this is still recursive here. So let me just move it up a bit. F at 3 is going to need F at 2. And it's also going to need F at 1. And F at 2, well, that would need F at 1. And it would need F at 0. F at 2 is going to need F at 1 and F at 0. And let's just copy and paste this stuff here because F of 3 over here, well, it's going to need the same stuff over here. So F at 3 over here also needs all of that information. And so to work out this information here, well, at the bottom, we know that these base cases are actually numbers. And so these are basically leaves in this tree here. It's kind of like a recursive tree. And so the leaves are numbers. F at 0, that is a number. And so that is 0. F at 1, that is a number, which is 1. And now we know that F at 2 is 1 plus 0. And so we can replace F at 2 with its value of 1. F at 1, again, these are all going to be replaced by ones. Those are ones. This one is also a 1 and so is that. Okay, these ones are going to be zeros. And you can see we're basically doing duplicate information here. We already learned earlier that F at 2 was 1. But we're going to replace it again over here with this is going to be 1. And this is going to be 1. So the F at 3's, they are all going to be 2's. So this is going to be a 2. And this is also going to be a 2. Now the F at 4 will be replaced by 3. So this is 3. And finally, we know that F at 5, that is going to be a value of 5. And you can actually see that over here, we already computed that earlier. Now, when a function is recursive, you'll often hear this term called a call stack. So it is a stack because it literally is a stack data structure. This is why recursion comes after the stack sections because it uses a recursive call stack. And by call, we mean that's basically short for function call stack. So this is our function. And we can see we're calling it many times here. These are calls of the function. And so when you're calling the function within the function itself, it is recursive and it's going to generate, we'll be called a function call stack. Or sometimes called a recursive call stack. So let's say we wanted to compute F at 4 here. Well, I'm actually going to put that on the bottom because it's a call stack. We could think about it as building up. So what the call stack would be for this, it's going to look like this. So the call of F at 4, that's again why it's called call stack, because for this function call of F at 4, let's store certain information. It basically says there's this local variable N, which is equal to 4, because throughout this call of the function, N has a value of 4. And function calls also have memory addresses. They basically have what we'd call a return address. It's just going to be like some hex code. So 0x and then a bunch of information here. We'll just call it 0x123. And so for simplicity, let me just kind of think about this as address A here. So what F at 4 does, well, it says, okay, N is equal to 4 throughout this function call. And so the first thing it needs to know is the value of this, which is going to be F at N minus 1, which will be F at 3. So it immediately calls this function here. And that's why it generates the call stack. So F at 4, it first needs to know the information for F at 3. And so now we're in a new call of the function here. Throughout this call, it is N equal to 3. And so here, it stores information, here N is equal to 3. And it also has an address to return 2. I'll just write address B, for example here. It's some hex code. Okay, so F at 3, well, it would need to know F at 2 plus F at 1. And so the first thing it does is it's going to go over into F at 2. So we'd build this up again. So we'd say, okay, well, we'd have a spot for F at 2. And so throughout here, N is equal to 2. And we'd store our return address. So we'll just call that address C, for example. Okay, so over here, we'd be concerned with N is equal to 2. And so F at 2 would need F at 1 plus F at 0. So the first thing it needs is F at 1. So it's going to go over here. And so we have F at 1 over here. Okay, so F at 1 is very interesting because we store here that N is equal to 1. And we'd have a return address, address of D. And what's interesting about F at 1 here is that it is not going to kind of build up the stack here. It is at what we call a base case. And recursive functions, they need some sort of base cases here. Because if you didn't have them, they'd basically just call forever. They would just infinitely call the function and you would never return. So here we've hit a base case, which is F at 1. And so here at this function call level, we just return 1. Return what does that really mean? Okay, we return 2 where we came from. We'll be came from F at 2. So we're basically telling, hey, F at 2, you called me, you called F at 1. Well, my value, I'm going to return that to you, is the value of 1. So basically, we would go back to F at 2 here. And it would kind of remember here, it would say, okay, we called this guy here. We called F at 1. And so his value is actually equal to 1. And so we'd also need to call F at N minus 2. So he would want to know what the value of F at 0 is. Currently, it's just a question mark. So we would go and get F at 0. And so F at 0. In this context, we have N is equal to 0. And again, you would have some address, but I'm going to stop writing it. It's going to be some address, we'll call it E. And so again, F at 0 is a base case. So he's not going to build this up any further. And so he's going to return to F at 2 via this memory address here. So that's why we need the memory address, because F at 0, we need to know where to return to. We return to where we called it, which in this case is address C associated with F at 2. So we return our value of 0 over to this memory address or basically telling F at 2 here that its value of F at 0, that function call has a value of 0. OK, it now knows that F at 1 is 1 and F at 0 is 0. So it knows the value of both of these two calls. And so now, F at 2 is able to return the value, which is F at 1 plus F at 0. And its value is going to be 1, which is the sum of those two things. OK, so F at 2 is 1. It's going to return to the thing that called it, which is going to be F at 3, which is located at memory address B. So it basically says, OK, hey, F at 3 here, well, your value of F at 2, that is going to be a result of 1. But then F at 3 also needs to know the value of F at 1. And so it's going to then put that on the call stack. So F at 1, I'm going to do this a little bit faster. And so it would basically return here that its value is a base case, which is just going to be the value of 1. So that's how we know that F at 3 is 2. We return this information back to where we called it. So F at 4 knows that its value of F at 3 is a value of 2. But F at 4 also needs to know the value of F at 2. And so we kind of build this call stack back up here. F at 2, F at 2 is not a base case. And so it needs to know the value of F at 1, which is currently a question mark, F at 0, which is currently a question mark. And so we could draw that for F at 1 here, that's going to quickly kind of return here and say that the value of F at 1, that is a base case of 1, F at 0, that would tell us that has a value of 0. And again, F at 2 would basically return the sum of these two values over 2, this call here. And so it would tell it that F at 2, this value is going to be just 1. So now, F at 4 actually has the total value here of F at 3 plus F at 2, which is going to just be 3. So F at 4 has a value of 3. Okay, so that's the recursive call stack and the fundamental idea of recursion. So just to really illustrate what would happen here, if you called something like F at 4, well, it's firstly going to do this before it even thinks about this idea. So the placement of this actually has a huge effect on the way that the computer is going to run this. It first is going to see F at n minus 1 before worrying about F at n minus 2. So F at 4 is actually first going to think about F at 3 and then it's a recursive call. So F at 3 thinks about it the same way. This guy needs to know what F at 2 is first. So he goes and gets F at 2 and F at 2 is going to first think about F at 1. Now we hit a base case and so F at 2 can kind of remember that F at 1 has a value of 1. Okay, F at 2 also is going to need F at 0, which we'd return back and say that's a value of 0. F at 2 would then basically return to F at 3 that it has a value of 1. Now F at 3 can think about F at 1 and so F at 1 is going to be a base case of just 1. Okay, F at 3 is now going to return to F at 4 that it has a value of 2. And then F at 4 would go through this stuff. So it also go through F at 2, which again is going to go through F at 1. That's going to be 1. F at 2 would then need F at 0, which is going to be 0. It would then say to F at 4 that it has a value of 1. And then ultimately we'd have that F at 4 is actually going to be a result of 3. So what happens is you can see there's one thing at this level. There's two things at this level for this level. And if we picked a higher value here, this actually would have had at most 8 things here and then 16 and you basically get a doubling effect. So what's basically happening here is that there is 2 to the 0 things at this level, 2 to the 1 here, 2 to the 2 here, and 2 to the 3 here and so on. So you're getting a doubling effect starting at n and that's going to work itself all the way down to 0. So there's approximately n things or n plus 1 things there. So basically in the bottom level, you're going to have roughly 2 to the n things. So you could think about this as a time complexity of big 0 of 2 to the n due to the doubling effect. So the doubling effect happens because at any F at n, you basically need to sprout off into two different pieces here. So your 2 is coming up because you basically have two different options here. And the n is happening because you're basically starting at n and working yourself all the way down to the base cases. Okay, so this would have a time complexity of big 0 of 2 to the n and this base complexity is extremely interesting here and a very important lesson. Well, remember we drew that recursive call stack? I'm not going to draw it again because it's a little annoying. But basically you would have F at 5 stores information like the value of n and the return address. So that stores information. So it's F at 4, 3, 2, 1 and it goes all the way down here. So basically you are storing in the call stack all of this information at the same time. So if you're storing some variables and a return address for each of those things in the call stack, basically there is 0 of n many things there. Because again, you're starting at n which is equal to 5 and you're working yourself down to the bottom of 1 or maybe down to 0. It's the space complexity of big 0 of n due to the recursive call stack taking up that space. So whenever you have a recursive function that's kind of drawn out like this, it's going to be a space complexity of the height of that recursive tree. Now you can actually use recursion for many problems although some of the most common ones you'll see is for linked lists because they are a recursive data structure. They're basically a node that points to another node that itself is basically a recursion and eventually it has a base case which at the end is that it points to null or in Python it would be called none. So linked lists are recursive and so their algorithms might be recursive. We also have trees. So trees are recursive data structure because they might look something like this. We basically have nodes that are pointing to other nodes and again they would have base cases. So the leaf nodes here they would have left and right children of nothing. These are going to be pointing to null which again are base cases. So trees are very recursive and so are graphs and you can actually solve many problems just in general using recursion. It's very versatile. Okay, so let's do a little fun with recursion here. So one thing that's recursive is definitely a linked list. It's a recursive data structure in nature. So we'll have 1 points over to 2 points over to 3 points over to 4 and we'd be given some head to this linked list called h. And so what I want to do is print the nodes in reverse order. So I want to see 4 first and then 3 then 2 then 1. Now we still have to start at the beginning of the list. We'd have to start here because that is what we're given. You could think about this as a recursive call stack so you'd start at 1 just don't print it yet and then you could call the next node which is going to be 2. Don't print that just go over to the next node of 3 and they go over to 4 and then when we go over to well nothing this is basically just null. That would be our base case here if null basically just return back over here and so you'd return back here and you could now print this value. So you could print the value of 4 and then you could return back here and then print your value of 3. So 3 and then we'd print again we'd print 2 and get to our very beginning of the list we would print 1 and here you would entirely relieve the call stack and so then you would be done. Okay so let's first talk about the Fibonacci sequence. So this is defined as f of 0 is equal to 0 and you might see other base cases but that's generally how it's set up. f of 1 is equal to 1 and more generally for any n that's bigger than 1 you would have that f at n is equal to f at n minus 1 plus f at n minus 2. So we would make a recursive function called f at n and so you'd write your base cases almost always at the top so if n is equal to 0 then you would return the value of 0 otherwise if n is equal to 1 then you would return the other base case which is 1 and then otherwise you'd return the recursive part which is f at n minus 1 plus f at n minus 2 again just the sum of the previous two values. Okay so you could test this out here we could call say f at 5 that is equal to 5 one of your base cases maybe so f at 0 is 0 f at 1 is equal to 1 and if you were to call this with a big value of say f at 100 well you can basically just watch it spin and do nothing it is going to just sit here and compute and technically it would complete eventually but this has a time complexity of big O of 2 to the n so that would mean roughly this is trying to do 2 to the 100 which is a massive number here in fact if we stop that we could just calculate that 2 you would do at asterisk asterisk 2 to the 100 that is equal to this massive number it's trying to do approximately that many operations that's going to complete eventually in theory but it's just going to take way too long so this is not going to work for bigger numbers we could stick at something like say f at 12 that's going to be 144 now again because of the recursive call stack here this is going to have a space complexity of big O of n basically starting at n it has to open the call stack and get all the way down to the base case before I can start relieving information so this has a time of 2 to the n and a space of 0 of n so whenever you're given a recursive formula like this definitely think about recursion and just in general many problems can be thought of as recursively definitely linked lists are recursive and so we'll write our function that basically just prints and refers so we'll define this as refers it takes the head of a linked list and before we write this we would need a linked list to call the son so let me just paste our previous linked list from before so this is our class to actually get a real linked list you could do something like this so head of 1 points over to 3 to 4 to 7 to nothing so if we print the head we'll just see the value of 1 but we have that linked list and I think it's actually a little better just to call this node although it doesn't really matter so our base case would be if we don't have a node so that would mean if we call this on null well that would mean we got to the end of the list and so we are ready just to return if we don't have a node if our node is null we don't have anything to print so we just return okay if we don't get hit by this if statement then we are a node and so before printing ourselves we want to print over the next guy and so here's the recursion you would want to first reverse on the node.next so before processing ourselves we want to process the next guy until we hit a base case and then we can start printing after we're back from this function call here we did all the stuff ahead of it we're back here and we're ready to print ourselves so we'll just print the current node and that's really all it is here so if you call reverse on the head of our linked list and sorry it's going to be a capital H there you would get the nodes in reverse order our list was 1347 but we're printing it in the order of 7431 okay now this would have a time complexity of big of n where n is the number of nodes in the linked list we have to go through the list and then basically return all the way back and the space complexity well that actually also has an O of n space you could actually picture this basically as the call stack we start at the head but before printing him we have to go here then we have to go here then here and then once we hit our base case of nothing then we can actually start printing and so basically this whole call stack is open and so that is also going to be a space of big of n because of the recursive call stack okay so I hope this was helpful guys drop it like if it was and have a great day bye bye"
+}
