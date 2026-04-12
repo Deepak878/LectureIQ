@@ -1,11 +1,35 @@
+---
+title: LectureIQ
+emoji: 🎓
+colorFrom: green
+colorTo: blue
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # LectureIQ
 
-LectureIQ is a project as part of Distributed Computing Course building to turn lecture recordings into searchable, timestamped transcripts.
+LectureIQ turns lecture recordings into searchable, timestamped transcripts so you don't have to scrub through hours of video just to find one thing the professor said.
 
-We are trying to eliminate the need to manually search the lecture recordings just to find one thing the professor said, so our idea is to feed the lecture video or audio file, and it gives you a clean transcript with timestamps, topic breakdowns, and eventually lets us just ask questions about the lecture content which will be bounded within the lecture domain. 
+Upload a lecture video or audio file and it gives you a clean transcript with timestamps. You can search by meaning (not just keywords), ask questions about the lecture, and generate flashcards or quizzes from the content.
 
-## To Run 
+## How to run
 
-pip install faster-whisper flask
+```bash
+pip install -r requirements.txt
+python app.py
+```
 
-python run_pipeline.py your_lecture.mp4
+Then open http://localhost:5000
+
+You need a `GROQ_API_KEY` in a `.env` file for the Q&A and study tools to work. Get one free at console.groq.com.
+
+## What it uses
+
+- faster-whisper for transcription (runs locally, no API needed)
+- sentence-transformers for semantic search
+- Qdrant as the vector database (local, no server)
+- Groq API with LLaMA 3.3 70B for answering questions and generating study material
+- FFmpeg for pulling audio from video files
+- Flask for the web interface
