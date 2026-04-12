@@ -22,4 +22,4 @@ ENV PORT=7860
 EXPOSE 7860
 
 # gunicorn:
-CMD gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 600 app:app
+CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 600 app:app"]

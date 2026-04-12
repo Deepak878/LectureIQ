@@ -1,0 +1,52 @@
+# claude / editor / git
+.claude
+.claude*
+.claudeignore
+.vscode
+.idea
+.git
+.gitignore
+
+# python cache
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+*.egg-info
+
+# docs / planning files (not needed in container)
+*.docx
+*.pdf
+*.pptx
+*.txt
+!requirements.txt
+
+# project diagram / slide htmls (presentation only)
+gantt_chart.html
+system_architecture.html
+sequence_diagram.html
+use_case_diagram.html
+workflow_diagram.html
+visual_cue_slides.html
+presentation_guide.html
+LectureIQ_Presentation.html
+
+# runtime data — should start fresh in container
+uploads/
+output/
+qdrant_db/
+audio.mp3
+*.mp3
+*.mp4
+*.wav
+
+# env / secrets — set these in HF Spaces secrets UI
+.env
+.env.*
+
+# misc
+Dockerfile
+.dockerignore
+README.md
