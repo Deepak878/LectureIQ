@@ -1,6 +1,5 @@
 """
-Flashcard and quiz generation from lecture transcripts.
-Uses the LLM abstraction layer (llm_client.py) so it works with any provider.
+flashcard and quiz generation from lecture transcripts using LLM abstraction layer 
 """
 
 import json
@@ -8,8 +7,7 @@ from transcribe import format_timestamp
 
 
 def build_transcript_context(segments, max_segments=50):
-    """take transcript segments and build a readable text block for the LLM"""
-    # use up to max_segments to stay within token limits
+    """taking transcript segments and building  readable text block for LLM"""
     selected = segments[:max_segments]
     lines = []
     for seg in selected:
@@ -19,7 +17,7 @@ def build_transcript_context(segments, max_segments=50):
 
 
 def generate_flashcards(llm, segments, count=8):
-    """generate flashcards from transcript segments using the LLM"""
+    """generateing flashcards from transcript segments using LLM"""
 
     context = build_transcript_context(segments)
 
@@ -44,7 +42,7 @@ Return ONLY the JSON array, nothing else."""
 
     raw = llm.generate(system_prompt, user_message, temperature=0.3, max_tokens=2048)
 
-    # parse JSON from response (handle markdown code blocks)
+    # parsing JSON from response
     return _parse_json_response(raw)
 
 
@@ -88,14 +86,14 @@ def _parse_json_response(raw_text):
     """extract JSON array from LLM response, handling markdown code blocks"""
     text = raw_text.strip()
 
-    # strip markdown code fences if present
+    #stripping markdown code fences if present
     if text.startswith("```"):
         lines = text.split("\n")
-        # remove first line (```json) and last line (```)
+        #removing first line (```json) and last line (```)
         lines = [l for l in lines if not l.strip().startswith("```")]
         text = "\n".join(lines).strip()
 
-    # find the JSON array boundaries
+    #to find the JSON array boundaries
     start = text.find("[")
     end = text.rfind("]")
 

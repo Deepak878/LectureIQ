@@ -16,6 +16,7 @@ from vectorize import (
 from rag import build_context_from_segments, build_system_prompt
 from llm_client import get_llm_client
 from study_generator import generate_flashcards, generate_quiz
+from visual_cue import process_visual_cues, find_visual_cues
 
 
 app = Flask(__name__)
@@ -155,9 +156,10 @@ def handle_transcription():
     if check_if_audio_file(source_file):
         audio_to_transcribe = source_file
     elif check_if_video_file(source_file):
-        extracted = pull_audio_from_video(source_file, output_dir)
+        extracted, err = pull_audio_from_video(source_file, output_dir)
         if extracted is None:
-            return jsonify({"error": "audio extraction failed. is ffmpeg installed?"}), 500
+            msg = err or "audio extraction failed. is ffmpeg installed?"
+            return jsonify({"error": msg}), 500
         audio_to_transcribe = extracted
     else:
         return jsonify({"error": "unsupported file type"}), 400
@@ -317,6 +319,74 @@ def handle_quiz():
     quiz = generate_quiz(llm_client, transcript_data["segments"], count=count)
 
     return jsonify({"questions": quiz, "count": len(quiz)})
+
+
+@app.route("/frames/<path:filepath>")
+def serve_frame(filepath):
+    """serve captured frame images from output folder"""
+    return send_from_directory(OUTPUT_FOLDER, filepath)
+
+
+@app.route("/detect-visual-cues", methods=["POST"])
+def handle_visual_cues():
+    data = request.get_json()
+    if not data or "filename" not in data:
+        return jsonify({"error": "no filename provided"}), 400
+
+    filename = data["filename"]
+    source_file = os.path.join(UPLOAD_FOLDER, filename)
+
+    if not check_if_video_file(source_file):
+        return jsonify({"error": "visual cue detection requires a video file, not audio"}), 400
+
+    base_name = os.path.splitext(filename)[0]
+    output_dir = os.path.join(OUTPUT_FOLDER, base_name)
+    json_path = os.path.join(output_dir, f"{base_name}_transcript.json")
+
+    if not os.path.exists(json_path):
+        return jsonify({"error": "transcript not found. transcribe the lecture first."}), 404
+
+    # return cached results if already processed
+    cues_path = os.path.join(output_dir, "visual_cues.json")
+    if os.path.exists(cues_path):
+        with open(cues_path, "r", encoding="utf-8") as f:
+            cached = json.load(f)
+        return jsonify({**cached, "cached": True})
+
+    gemini_key = os.environ.get("GEMINI_API_KEY")
+    if not gemini_key:
+        return jsonify({"error": "Gemini API key not configured. Set GEMINI_API_KEY in environment."}), 500
+
+    with open(json_path, "r", encoding="utf-8") as f:
+        transcript_data = json.load(f)
+
+    results = process_visual_cues(
+        source_file, transcript_data["segments"], output_dir, gemini_key
+    )
+
+    # embed visual cue descriptions into qdrant so they show up in search
+    if results["cues"]:
+        from qdrant_client.models import PointStruct
+        cue_texts = [c["description"] for c in results["cues"]]
+        cue_embeddings = embedding_model.encode(cue_texts)
+        base_id = 10000  # offset to avoid colliding with transcript segment IDs
+        points = []
+        for j, (cue, emb) in enumerate(zip(results["cues"], cue_embeddings)):
+            points.append(PointStruct(
+                id=base_id + j,
+                vector=emb.tolist(),
+                payload={
+                    "text": f"[Visual] {cue['description']}",
+                    "start": cue["timestamp"],
+                    "end": cue["timestamp"] + 5,
+                    "source_file": filename,
+                    "type": "visual_cue",
+                },
+            ))
+        qdrant_client.upsert(collection_name="lecture_segments", points=points)
+        print(f"[visual] indexed {len(points)} visual cue descriptions in qdrant")
+
+    return jsonify({**results, "cached": False})
 
 
 if __name__ == "__main__":

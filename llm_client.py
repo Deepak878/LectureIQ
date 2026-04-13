@@ -46,23 +46,23 @@ class GeminiLLM:
     """google gemini — drop-in replacement for groq"""
 
     def __init__(self):
-        import google.generativeai as genai
+        from google import genai
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("GEMINI_API_KEY not set in .env")
-        genai.configure(api_key=api_key)
-        model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
-        self.model = genai.GenerativeModel(model_name)
+        self.client = genai.Client(api_key=api_key)
+        self.model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
         self.provider_name = "gemini"
 
     def generate(self, system_prompt, user_message, temperature=0.1, max_tokens=1024):
         """send a prompt to gemini and return the text response"""
-        combined_prompt = f"{system_prompt}\n\n{user_message}"
-        response = self.model.generate_content(
-            combined_prompt,
-            generation_config={
-                "temperature": temperature,
-                "max_output_tokens": max_tokens,
-            },
+        from google.genai import types
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=f"{system_prompt}\n\n{user_message}",
+            config=types.GenerateContentConfig(
+                temperature=temperature,
+                max_output_tokens=max_tokens,
+            ),
         )
         return response.text.strip()
