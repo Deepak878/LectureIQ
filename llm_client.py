@@ -12,6 +12,8 @@ def get_llm_client():
         return GroqLLM()
     elif LLM_PROVIDER == "gemini":
         return GeminiLLM()
+    elif LLM_PROVIDER == "vertex":
+        return VertexAILLM()
     else:
         raise ValueError(f"unknown LLM_PROVIDER: {LLM_PROVIDER}")
 
@@ -56,6 +58,45 @@ class GeminiLLM:
 
     def generate(self, system_prompt, user_message, temperature=0.1, max_tokens=1024):
         """send a prompt to gemini and return the text response"""
+        from google.genai import types
+        response = self.client.models.generate_content(
+            model=self.model_name,
+            contents=f"{system_prompt}\n\n{user_message}",
+            config=types.GenerateContentConfig(
+                temperature=temperature,
+                max_output_tokens=max_tokens,
+            ),
+        )
+        return response.text.strip()
+
+
+class VertexAILLM:
+    """gemini via vertex ai on google cloud - uses GCP billing ($300 credit)"""
+
+    def __init__(self):
+        from google import genai
+        api_key = os.getenv("GEMINI_API_KEY")
+        project = os.getenv("GCP_PROJECT_ID")
+        location = os.getenv("GCP_LOCATION", "us-central1")
+
+        # try express mode first (api key), fall back to ADC + project/location
+        if api_key:
+            try:
+                self.client = genai.Client(vertexai=True, api_key=api_key)
+            except Exception:
+                if not project:
+                    raise ValueError("express mode failed and GCP_PROJECT_ID not set")
+                self.client = genai.Client(vertexai=True, project=project, location=location)
+        elif project:
+            self.client = genai.Client(vertexai=True, project=project, location=location)
+        else:
+            raise ValueError("need GEMINI_API_KEY or GCP_PROJECT_ID for vertex provider")
+
+        self.model_name = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        self.provider_name = "vertex-ai"
+
+    def generate(self, system_prompt, user_message, temperature=0.1, max_tokens=1024):
+        """send a prompt to vertex ai gemini and return the text response"""
         from google.genai import types
         response = self.client.models.generate_content(
             model=self.model_name,

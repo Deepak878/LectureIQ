@@ -238,27 +238,32 @@ def handle_ask():
     question = data["question"]
     filename = data.get("filename")
 
-    # always send full transcript so the LLM has complete lecture context
+    # make sure a transcript exists for the requested lecture
     all_segments = load_all_segments(filename) if filename else None
-
     if not all_segments:
         return jsonify({"error": "no transcript found. transcribe a lecture first."}), 404
 
-    context_text = build_context_from_segments(all_segments)
-    system_prompt = build_system_prompt()
-    user_message = f"Full lecture transcript:\n{context_text}\n\nQuestion: {question}"
-
-    answer = llm_client.generate(system_prompt, user_message, temperature=0.1, max_tokens=1024)
-
-    # use search to find the most relevant timestamps to show as sources
+    # RAG: retrieve top-k most relevant segments as context (keeps prompt within LLM token budget)
     results = search_transcript(
         question, embedding_model, qdrant_client,
-        top_k=3, reranker=reranker_model
+        top_k=15, reranker=reranker_model
     )
-    source_segments = [
+    context_segments = [
         {"text": r.payload["text"], "start": r.payload["start"], "end": r.payload["end"]}
-        for r in results[:3]
+        for r in results
     ]
+    context_text = build_context_from_segments(context_segments)
+    system_prompt = build_system_prompt()
+    user_message = f"Relevant lecture transcript segments:\n{context_text}\n\nQuestion: {question}"
+
+    try:
+        answer = llm_client.generate(system_prompt, user_message, temperature=0.1, max_tokens=1024)
+    except Exception as e:
+        print(f"[error] LLM generate failed: {e}")
+        return jsonify({"error": f"LLM request failed: {e}"}), 500
+
+    # show the top 3 as sources in the UI
+    source_segments = context_segments[:3]
 
     return jsonify({
         "question": question,
@@ -289,7 +294,11 @@ def handle_flashcards():
     with open(json_path, "r", encoding="utf-8") as f:
         transcript_data = json.load(f)
 
-    flashcards = generate_flashcards(llm_client, transcript_data["segments"], count=count)
+    try:
+        flashcards = generate_flashcards(llm_client, transcript_data["segments"], count=count)
+    except Exception as e:
+        print(f"[error] flashcard generation failed: {e}")
+        return jsonify({"error": f"LLM request failed: {e}"}), 500
 
     return jsonify({"flashcards": flashcards, "count": len(flashcards)})
 
@@ -316,7 +325,11 @@ def handle_quiz():
     with open(json_path, "r", encoding="utf-8") as f:
         transcript_data = json.load(f)
 
-    quiz = generate_quiz(llm_client, transcript_data["segments"], count=count)
+    try:
+        quiz = generate_quiz(llm_client, transcript_data["segments"], count=count)
+    except Exception as e:
+        print(f"[error] quiz generation failed: {e}")
+        return jsonify({"error": f"LLM request failed: {e}"}), 500
 
     return jsonify({"questions": quiz, "count": len(quiz)})
 
